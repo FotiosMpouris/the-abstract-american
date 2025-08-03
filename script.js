@@ -3,122 +3,122 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     // === YOUR ACTION REQUIRED: EDIT THE ARTWORK LIST BELOW ===
     // =================================================================
-    // Instructions:
-    // 1. Add your image files to the `/images` folder.
-    // 2. For each piece of art, create a new object in the `artworks` array.
-    // 3. Make sure the `file` name matches your image file in the `/images` folder exactly.
-    // 4. Fill in the `title`, `medium`, and `dimensions` for each piece.
-    // 5. To add more art, just copy one of the objects, paste it at the end of the list, and change the details.
+    // I've created 25 placeholders for you.
+    // Just update the file names, titles, and other details for each piece.
 
     const artworks = [
-        {
-            file: 'art01.png',
-            title: 'Chromatic Pulse',
-            medium: 'Acrylic on Canvas',
-            dimensions: '24" x 36"'
-        },
-        {
-            file: 'art02.png',
-            title: 'Urban Dreamscape',
-            medium: 'Watercolor on Paper',
-            dimensions: '18" x 24"'
-        },
-        {
-            file: 'art03.png',
-            title: 'Subterranean Flow',
-            medium: 'Gouache and Ink',
-            dimensions: '22" x 22"'
-        },
-        // --- Add your next 22+ pieces below this line ---
-        // Example for a new piece:
-        // {
-        //     file: 'art04.png',
-        //     title: 'New Artwork Title',
-        //     medium: 'Medium Used',
-        //     dimensions: 'Width x Height'
-        // },
-        
+        // Replace these placeholders with your actual art details
+        { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic on Canvas', dimensions: '24" x 36"' },
+        { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art03.png', title: 'Subterranean Flow', medium: 'Gouache and Ink', dimensions: '22" x 22"' },
+        { file: 'art04.png', title: 'Artwork Title 4', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art05.png', title: 'Artwork Title 5', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art06.png', title: 'Artwork Title 6', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art07.png', title: 'Artwork Title 7', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art08.png', title: 'Artwork Title 8', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art09.png', title: 'Artwork Title 9', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art10.png', title: 'Artwork Title 10', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art11.png', title: 'Artwork Title 11', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art12.png', title: 'Artwork Title 12', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art13.png', title: 'Artwork Title 13', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art14.png', title: 'Artwork Title 14', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art15.png', title: 'Artwork Title 15', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art16.png', title: 'Artwork Title 16', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art17.png', title: 'Artwork Title 17', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art18.png', title: 'Artwork Title 18', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art19.png', title: 'Artwork Title 19', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art20.png', title: 'Artwork Title 20', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art21.png', title: 'Artwork Title 21', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art22.png', title: 'Artwork Title 22', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art23.png', title: 'Artwork Title 23', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art24.png', title: 'Artwork Title 24', medium: 'Medium', dimensions: '00" x 00"' },
+        { file: 'art25.png', title: 'Artwork Title 25', medium: 'Medium', dimensions: '00" x 00"' },
     ];
 
     // =================================================================
     // === NO MORE EDITING NEEDED BELOW THIS LINE ===
     // =================================================================
 
-    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryContainer = document.getElementById('gallery-container');
     const modal = document.getElementById('art-modal');
     const modalImg = document.getElementById('modal-img');
     const modalTitle = document.getElementById('modal-title');
     const modalDetails = document.getElementById('modal-details');
     const closeButton = document.querySelector('.close-button');
+    const header = document.getElementById('header');
 
-    // Function to create and display gallery
+    // Dynamic Navigation Bar
+    const heroSection = document.getElementById('hero');
+    window.addEventListener('scroll', () => {
+        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+        if (window.scrollY > heroBottom - 200) {
+            header.classList.add('visible');
+        } else {
+            header.classList.remove('visible');
+        }
+    });
+
+    // Function to populate the new gallery format
     function populateGallery() {
-        if (!galleryGrid) return;
+        if (!galleryContainer) return;
         
-        artworks.forEach((art, index) => {
+        artworks.forEach((art) => {
             const card = document.createElement('div');
             card.className = 'art-card';
-            card.style.animationDelay = `${index * 100}ms`; // Staggered fade-in effect
-            
-            const img = document.createElement('img');
-            img.src = `images/${art.file}`;
-            img.alt = art.title;
-            img.loading = 'lazy'; // Improves performance
 
-            card.appendChild(img);
+            card.innerHTML = `
+                <div class="image-wrapper">
+                    <img src="images/${art.file}" alt="${art.title}" loading="lazy">
+                </div>
+                <div class="art-details">
+                    <h3>${art.title}</h3>
+                    <p>${art.medium} | ${art.dimensions}</p>
+                </div>
+            `;
             
-            card.addEventListener('click', () => {
-                openModal(art);
-            });
-            
-            galleryGrid.appendChild(card);
+            card.addEventListener('click', () => openModal(art));
+            galleryContainer.appendChild(card);
         });
     }
 
-    // Function to open the modal with specific art info
+    // Intersection Observer for the "reveal" effect
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in-view');
+            }
+        });
+    }, { threshold: 0.4 }); // Trigger when 40% of the item is visible
+
+    function observeCards() {
+        const artCards = document.querySelectorAll('.art-card');
+        artCards.forEach(card => observer.observe(card));
+    }
+    
+    // Modal Functions (largely unchanged)
     function openModal(art) {
         modalImg.src = `images/${art.file}`;
         modalImg.alt = art.title;
         modalTitle.textContent = art.title;
         modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
         modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        document.body.style.overflow = 'hidden';
     }
 
-    // Function to close the modal
     function closeModal() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 
-    // Event listeners
     closeButton.addEventListener('click', closeModal);
-    
-    // Close modal if user clicks outside the content area
     window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
+        if (event.target === modal) closeModal();
     });
-    
-    // Close modal with Escape key
     window.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modal.style.display === 'flex') {
-            closeModal();
-        }
-    });
-    
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
+        if (event.key === 'Escape' && modal.style.display === 'flex') closeModal();
     });
 
-
-    // Initialize the gallery
+    // Initialize
     populateGallery();
+    observeCards();
 });
