@@ -23,17 +23,27 @@ body {
     line-height: 1.6;
 }
 
-/* --- Header & Navigation --- */
+/* --- Header & Dynamic Navigation --- */
 #header {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(18, 18, 18, 0.8);
+    background-color: rgba(18, 18, 18, 0.85);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 1rem 0;
     text-align: center;
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#header.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 nav a {
@@ -71,32 +81,23 @@ nav a:hover {
     animation: glow 4s ease-in-out infinite alternate;
 }
 
-.subtitle {
-    font-size: 1.5rem;
-    font-weight: 300;
-    margin-top: 1rem;
-    color: #aaa;
-}
-
 @keyframes glow {
     from {
-        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1), 0 0 50px var(--glow-color-1), 0 0 60px var(--glow-color-1), 0 0 70px var(--glow-color-1);
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1);
     }
     to {
-        text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2), 0 0 50px var(--glow-color-2), 0 0 60px var(--glow-color-2), 0 0 70px var(--glow-color-2), 0 0 80px var(--glow-color-2);
+        text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2);
     }
 }
 
 /* --- Section Styling --- */
 section {
-    padding: 100px 5%;
-    max-width: 1400px;
+    padding: 120px 5%;
+    max-width: 1200px;
     margin: 0 auto;
     border-bottom: 1px solid #2a2a2a;
 }
-section:last-of-type {
-    border-bottom: none;
-}
+section:last-of-type { border-bottom: none; }
 
 section h2 {
     font-family: 'Orbitron', sans-serif;
@@ -106,52 +107,84 @@ section h2 {
     color: #fff;
 }
 
-/* --- Gallery Grid --- */
-#gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+/* --- New "Single-File" Gallery --- */
+#gallery-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15vh; /* Creates significant space between artworks */
 }
 
 .art-card {
-    background-color: var(--card-bg);
-    border-radius: 8px;
-    overflow: hidden;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.5s ease-out forwards;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.art-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(0, 175, 255, 0.3);
+.art-card.is-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.art-card .image-wrapper {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .art-card img {
     width: 100%;
     height: auto;
     display: block;
+    filter: grayscale(100%) brightness(0.7);
+    transition: filter 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s ease;
 }
 
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.art-card.is-in-view img {
+    filter: grayscale(0%) brightness(1);
+}
+
+.art-card:hover img {
+    transform: scale(1.03);
+}
+
+.art-details {
+    opacity: 0;
+    transition: opacity 0.8s ease 0.3s;
+}
+
+.art-card.is-in-view .art-details {
+    opacity: 1;
+}
+
+.art-details h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.art-details p {
+    color: #aaa;
+    font-size: 1rem;
 }
 
 
-/* --- About & Commissions Sections --- */
-.about-content, .commissions-content {
+/* --- About & Connect Sections --- */
+.content-block {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
-.about-content p, .commissions-content p {
+.content-block p {
     margin-bottom: 1.5rem;
 }
 
@@ -163,115 +196,35 @@ section h2 {
     color: var(--glow-color-1);
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .email-link:hover {
     background-color: var(--glow-color-1);
     color: var(--background-color);
+    box-shadow: 0 0 15px var(--glow-color-1);
 }
 
+/* --- Modal (Largely unchanged, minor styling tweaks) --- */
+.modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
+.modal-content { background-color: var(--card-bg); margin: auto; padding: 30px; border-radius: 8px; max-width: 90%; max-height: 90vh; display: flex; flex-direction: column; position: relative; text-align: center; }
+.close-button { position: absolute; top: 15px; right: 25px; color: #aaa; font-size: 35px; font-weight: bold; cursor: pointer; }
+.close-button:hover { color: white; }
+#modal-img { max-width: 100%; max-height: 60vh; object-fit: contain; margin-bottom: 20px; }
+#modal-title { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin-bottom: 10px; }
+#modal-details { color: #ccc; margin-bottom: 20px; }
+#modal-acquisition-info a { color: var(--glow-color-1); }
+.donate-button { display: inline-block; background-color: var(--glow-color-2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; transition: background-color 0.3s ease; }
+.donate-button:hover { background-color: #d12c60; }
 
-/* --- Modal --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.9);
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    background-color: var(--card-bg);
-    margin: auto;
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 90%;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    text-align: center;
-}
-
-.close-button {
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    color: #aaa;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-button:hover {
-    color: white;
-}
-
-#modal-img {
-    max-width: 100%;
-    max-height: 60vh;
-    object-fit: contain;
-    margin-bottom: 20px;
-}
-
-#modal-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-}
-
-#modal-details {
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-#modal-acquisition-info a {
-    color: var(--glow-color-1);
-}
-
-.donate-button {
-    display: inline-block;
-    background-color: var(--glow-color-2);
-    color: white;
-    padding: 15px 30px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.donate-button:hover {
-    background-color: #d12c60;
-}
 
 /* --- Footer --- */
-footer {
-    text-align: center;
-    padding: 40px 20px;
-    color: #666;
-}
+footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9rem; }
 
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
-    .glow-title {
-        font-size: 3rem;
-    }
-    .subtitle {
-        font-size: 1.2rem;
-    }
-    section h2 {
-        font-size: 2rem;
-    }
-    nav a {
-        margin: 0 10px;
-        font-size: 1rem;
-    }
+    .glow-title { font-size: 3rem; }
+    section h2 { font-size: 2rem; }
+    nav a { margin: 0 10px; font-size: 1rem; }
+    .content-block { font-size: 1.1rem; }
 }
