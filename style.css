@@ -159,6 +159,7 @@ footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9rem;
 /* --- Responsive fixes --- */
 @media (max-width: 768px) {
     #gallery-stage { height: 50vh; }
+    .hero-frame { display: none; }
 }
 
 /* On larger screens, switch modal to two-column layout */
