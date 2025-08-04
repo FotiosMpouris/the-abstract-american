@@ -11,65 +11,75 @@
 </head>
 <body>
     <div class="background-texture"></div>
+
     <div id="splash-screen">
         <button id="enter-button">Click to Enter The Abstract American</button>
     </div>
+
     <audio id="background-music" loop src="music.mp3"></audio>
+
+    <div id="music-control">
+        <button id="music-button">❚❚</button>
+    </div>
 
     <header id="header">
         <nav>
-            <a href="#kinetic-wall" class="nav-link">Gallery</a>
+            <a href="#hero" class="nav-link">Title</a>
+            <a href="#gallery" class="nav-link">Gallery</a>
             <a href="#about" class="nav-link">About</a>
             <a href="#connect" class="nav-link">Connect</a>
         </nav>
     </header>
 
     <main>
-        <!-- This section's structure is now simpler and more robust -->
-        <section id="kinetic-wall">
-            <div class="scroller-container">
-                <div class="scroller" id="scroller-top">
-                    <!-- Images will be inserted here -->
-                </div>
-                <div class="scroller" id="scroller-bottom">
-                    <!-- Images will be inserted here -->
-                </div>
-            </div>
-            <!-- Title is now outside the scroller container to allow absolute positioning -->
+        <section id="hero">
+            <div class="hero-frame"></div>
             <h1 class="glow-title">The Abstract American</h1>
         </section>
 
-        <!-- The rest of the page remains the same -->
+        <section id="gallery">
+            <h2>Gallery</h2>
+            <div id="gallery-stage">
+                <!-- The rhythmic images will be inserted here by JavaScript -->
+            </div>
+        </section>
+
         <section id="about">
             <h2>About</h2>
             <div class="content-block">
-                <p>Art is an exorcism... a journey through the challenging and the sublime.</p>
+                <p>Art is not a simple creation; it is an exorcism. It's the process of sorting through the difficult, beautiful stages of love and hate as a piece comes together, managing through chaos to find what is true.</p>
+                <p>Each work is a finished accomplishment, a journey through the challenging and the sublime. This is the core of The Abstract American: not just images on a canvas, but relics of a process, presented for those who feel the same pull.</p>
             </div>
         </section>
+
         <section id="connect">
             <h2>Connect</h2>
             <div class="content-block">
-                <p>A commission is a conversation, a meeting of visions.</p>
+                <p>Great things are born from dialogue, not instruction. A commission or collaboration is a conversation, a meeting of visions.</p>
+                <p>If my work resonates with you on a deeper level and you wish to begin a conversation about a potential project or acquisition, you are invited to reach out. Let's see if our visions align.</p>
                 <a href="mailto:your-email@example.com" class="email-link">Begin the Conversation</a>
             </div>
         </section>
     </main>
     
-    <footer><p>© 2024 The Abstract American. All Rights Reserved.</p></footer>
+    <footer>
+        <p>© 2024 The Abstract American. All Rights Reserved.</p>
+    </footer>
 
-    <!-- Modal is unchanged -->
     <div id="art-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">×</span>
             <img id="modal-img" src="" alt="Artwork">
-            <h3 id="modal-title"></h3><p id="modal-details"></p>
+            <h3 id="modal-title"></h3>
+            <p id="modal-details"></p>
             <div id="modal-acquisition-info">
-                <p><strong>Acquisition:</strong> To make this piece part of your story, a contribution through patronage is welcome.</p>
-                <p>After making your crypto donation, please email <a href="mailto:your-email@example.com">your-email@example.com</a>.</p>
+                <p><strong>Acquisition:</strong> To make this piece part of your story, a contribution through patronage is welcome. All serious offers are considered.</p>
+                <p>After making your crypto donation, please email <a href="mailto:your-email@example.com">your-email@example.com</a> with the transaction details and the artwork title to arrange shipping and handling.</p>
                 <a href="#" target="_blank" class="donate-button">Patronage via Crypto (Coinbase)</a>
             </div>
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
