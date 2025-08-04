@@ -1,11 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // =================================================================
-    // === THE DEFINITIVE ARTWORK LIST ===
-    // This is the most important part for you to edit.
-    // The website can ONLY show images that are defined in this list.
-    // Your only task is to edit the `title`, `medium`, and `dimensions`.
-    // =================================================================
     const artworks = [
         { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic', dimensions: '24" x 36"' },
         { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor', dimensions: '18" x 24"' },
@@ -45,10 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentImageIndex = 0;
     let galleryInterval = null;
-    const cycleTime = 4000; // 4 seconds per image (includes fade in/out)
+    const cycleTime = 4000;
 
-    // Fading Nav Bar Logic
     window.addEventListener('scroll', () => {
+        if (!header) return;
         if (window.scrollY > window.innerHeight * 0.5) {
             header.classList.add('visible');
         } else {
@@ -56,19 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Holographic Gallery Logic
     function showNextImage() {
         if (!galleryStage || artworks.length === 0) return;
 
-        // Make the currently active image start exiting
         const currentActive = galleryStage.querySelector('.active');
         if (currentActive) {
             currentActive.classList.remove('active');
             currentActive.classList.add('exiting');
-            setTimeout(() => { if (currentActive) currentActive.remove(); }, 1200); // Remove from DOM after fade
+            setTimeout(() => { if (currentActive) currentActive.remove(); }, 1200);
         }
 
-        // Create the new item
         const art = artworks[currentImageIndex];
         const newItem = document.createElement('div');
         newItem.className = 'stage-item';
@@ -76,38 +67,36 @@ document.addEventListener('DOMContentLoaded', () => {
         newItem.addEventListener('click', () => { openModal(art); });
         
         galleryStage.appendChild(newItem);
-        galleryInfo.textContent = art.title;
+        if (galleryInfo) galleryInfo.textContent = art.title;
 
-        // Trigger the animation to make it active
         setTimeout(() => { newItem.classList.add('active'); }, 50);
 
-        // Update index for the next cycle
         currentImageIndex = (currentImageIndex + 1) % artworks.length;
     }
 
     function startGallery() {
         if (galleryInterval) clearInterval(galleryInterval);
-        showNextImage(); // Show the first image immediately
+        showNextImage();
         galleryInterval = setInterval(showNextImage, cycleTime);
     }
 
-    // Modal Logic
     function openModal(art) {
         if (!modal) return;
-        clearInterval(galleryInterval); // Pause gallery
+        clearInterval(galleryInterval);
         modalImg.src = `images/${art.file}`;
         modalTitle.textContent = art.title;
         modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
         modal.style.display = 'flex';
     }
 
+
+
     function closeModal() {
         if (!modal) return;
         modal.style.display = 'none';
-        startGallery(); // Resume gallery
+        startGallery();
     }
 
-    // Navigation Logic
     document.querySelectorAll('a.nav-link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -116,10 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Event Listeners
     if (closeButton) closeButton.addEventListener('click', closeModal);
     window.addEventListener('click', (event) => { if (event.target == modal) closeModal(); });
 
-    // Start the show!
     startGallery();
 });
