@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // =================================================================
     // === THE DEFINITIVE ARTWORK LIST ===
-    // This list MUST contain an entry for every image you want to display.
-    // If an image is missing on the site, add its entry here.
+    // This is the most important part for you to edit.
+    // The website can ONLY show images that are defined in this list.
     // Your only task is to edit the `title`, `medium`, and `dimensions`.
     // =================================================================
     const artworks = [
@@ -34,94 +34,80 @@ document.addEventListener('DOMContentLoaded', () => {
         { file: 'art25.png', title: 'Artwork Title 25', medium: 'Medium', dimensions: '00" x 00"' }
     ];
 
-    // --- Elements ---
-    const splashScreen = document.getElementById('splash-screen');
-    const enterButton = document.getElementById('enter-button');
-    const music = document.getElementById('background-music');
-    const musicButton = document.getElementById('music-button');
+    const header = document.getElementById('header');
     const galleryStage = document.getElementById('gallery-stage');
+    const galleryInfo = document.getElementById('gallery-info');
     const modal = document.getElementById('art-modal');
     const modalImg = document.getElementById('modal-img');
     const modalTitle = document.getElementById('modal-title');
     const modalDetails = document.getElementById('modal-details');
     const closeButton = document.querySelector('.close-button');
-
+    
     let currentImageIndex = 0;
     let galleryInterval = null;
+    const cycleTime = 4000; // 4 seconds per image (includes fade in/out)
 
-    // --- Rhythmic Gallery Logic ---
+    // Fading Nav Bar Logic
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > window.innerHeight * 0.5) {
+            header.classList.add('visible');
+        } else {
+            header.classList.remove('visible');
+        }
+    });
+
+    // Holographic Gallery Logic
     function showNextImage() {
-        if (!galleryStage) return;
-        const oldImage = galleryStage.querySelector('.current');
-        if (oldImage) {
-            oldImage.classList.remove('current');
-            oldImage.classList.add('outgoing');
-            setTimeout(() => { if (oldImage && oldImage.parentElement) { oldImage.parentElement.removeChild(oldImage); } }, 1200);
+        if (!galleryStage || artworks.length === 0) return;
+
+        // Make the currently active image start exiting
+        const currentActive = galleryStage.querySelector('.active');
+        if (currentActive) {
+            currentActive.classList.remove('active');
+            currentActive.classList.add('exiting');
+            setTimeout(() => { if (currentActive) currentActive.remove(); }, 1200); // Remove from DOM after fade
         }
 
-        const nextArt = artworks[currentImageIndex];
-        const newImage = document.createElement('div');
-        newImage.className = 'stage-image incoming';
-        newImage.innerHTML = `<img src="images/${nextArt.file}" alt="${nextArt.title}">`;
+        // Create the new item
+        const art = artworks[currentImageIndex];
+        const newItem = document.createElement('div');
+        newItem.className = 'stage-item';
+        newItem.innerHTML = `<img src="images/${art.file}" alt="${art.title}">`;
+        newItem.addEventListener('click', () => { openModal(art); });
         
-        newImage.addEventListener('click', () => { openModal(nextArt); });
-        galleryStage.appendChild(newImage);
+        galleryStage.appendChild(newItem);
+        galleryInfo.textContent = art.title;
 
-        setTimeout(() => { newImage.classList.remove('incoming'); newImage.classList.add('current'); }, 50);
+        // Trigger the animation to make it active
+        setTimeout(() => { newItem.classList.add('active'); }, 50);
 
+        // Update index for the next cycle
         currentImageIndex = (currentImageIndex + 1) % artworks.length;
     }
 
     function startGallery() {
         if (galleryInterval) clearInterval(galleryInterval);
-        showNextImage();
-        const BPM = 125;
-        const slideCycleDuration = (60 / BPM) * 3;
-        galleryInterval = setInterval(showNextImage, slideCycleDuration * 1000);
+        showNextImage(); // Show the first image immediately
+        galleryInterval = setInterval(showNextImage, cycleTime);
     }
 
-    // --- Music & Modal Control ---
-    function toggleMusic() {
-        if (music.paused) {
-            music.play();
-            musicButton.innerHTML = '❚❚';
-            if (galleryInterval === null) startGallery();
-        } else {
-            music.pause();
-            musicButton.innerHTML = '▶';
-        }
-    }
-
+    // Modal Logic
     function openModal(art) {
         if (!modal) return;
+        clearInterval(galleryInterval); // Pause gallery
         modalImg.src = `images/${art.file}`;
         modalTitle.textContent = art.title;
         modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
         modal.style.display = 'flex';
-        if (galleryInterval) clearInterval(galleryInterval);
-        galleryInterval = null;
-        if (!music.paused) music.pause();
-        musicButton.innerHTML = '▶';
     }
 
     function closeModal() {
         if (!modal) return;
         modal.style.display = 'none';
-        if (galleryInterval === null) startGallery();
-        if (music.paused) music.play();
-        musicButton.innerHTML = '❚❚';
+        startGallery(); // Resume gallery
     }
 
-    // --- Entry Point ---
-    enterButton.addEventListener('click', () => {
-        splashScreen.style.opacity = '0';
-        splashScreen.style.pointerEvents = 'none';
-        window.scrollTo(0, 0);
-        music.play();
-        startGallery();
-    });
-
-    // --- Navigation ---
+    // Navigation Logic
     document.querySelectorAll('a.nav-link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -130,8 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Event Listeners ---
-    musicButton.addEventListener('click', toggleMusic);
-    if(closeButton) closeButton.addEventListener('click', closeModal);
+    // Event Listeners
+    if (closeButton) closeButton.addEventListener('click', closeModal);
     window.addEventListener('click', (event) => { if (event.target == modal) closeModal(); });
+
+    // Start the show!
+    startGallery();
 });
