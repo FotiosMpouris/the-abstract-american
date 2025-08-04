@@ -60,11 +60,12 @@ nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-
 
 .glow-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 5rem;
+    /* FIX: Responsive font size using clamp() for perfect scaling */
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
     color: #fff;
     text-transform: uppercase;
     animation: glow 4s ease-in-out infinite alternate;
-    white-space: nowrap; /* FIX: Prevents title from wrapping to new line */
+    white-space: nowrap;
 }
 @keyframes glow {
     from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1); }
@@ -75,16 +76,22 @@ section { padding: 120px 5%; border-bottom: 1px solid #2a2a2a; }
 section:last-of-type { border-bottom: none; }
 section h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 50px; color: #fff; }
 
-/* --- NEW HOLOGRAPHIC GALLERY --- */
-#gallery { display: flex; flex-direction: column; align-items: center; }
+#gallery {
+    /* FIX: Adjusted padding for better scroll anchoring */
+    padding-top: 150px;
+    padding-bottom: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 #gallery-stage {
     position: relative;
     width: 100%;
     max-width: 900px;
-    height: 70vh; /* FIX: Responsive height */
-    max-height: 600px; /* FIX: But never too tall */
-    background-color: transparent; /* No background, let the image float */
+    height: 70vh;
+    max-height: 600px;
+    background-color: transparent;
     overflow: hidden;
 }
 
@@ -97,45 +104,74 @@ section h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align:
     filter: blur(5px);
     transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease;
 }
-.stage-item.active {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-    z-index: 5;
-}
-.stage-item.exiting {
-    opacity: 0;
-    transform: translateY(-20px);
-    z-index: 4;
-}
+.stage-item.active { opacity: 1; transform: translateY(0); filter: blur(0); z-index: 5; }
+.stage-item.exiting { opacity: 0; transform: translateY(-20px); z-index: 4; }
 .stage-item img { width: 100%; height: 100%; object-fit: contain; }
 
-#gallery-info {
-    margin-top: 25px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    height: 2em; /* Reserve space to prevent layout jump */
-    text-align: center;
-    color: var(--primary-color);
-}
+#gallery-info { margin-top: 25px; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; height: 2em; text-align: center; color: var(--primary-color); }
 
 .content-block { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem; }
 .content-block p { margin-bottom: 1.5rem; }
 .email-link { display: inline-block; margin-top: 1rem; padding: 12px 25px; border: 1px solid var(--glow-color-1); color: var(--glow-color-1); text-decoration: none; border-radius: 5px; transition: all 0.3s ease; }
 .email-link:hover { background-color: var(--glow-color-1); color: var(--background-color); box-shadow: 0 0 15px var(--glow-color-1); }
 
-.modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
-.modal-content { background-color: #1E1E1E; margin: auto; padding: 30px; border-radius: 8px; max-width: 90%; max-height: 90vh; display: flex; flex-direction: column; position: relative; text-align: center; }
-.close-button { position: absolute; top: 15px; right: 25px; color: #aaa; font-size: 35px; font-weight: bold; cursor: pointer; }
-#modal-img { max-width: 100%; max-height: 60vh; object-fit: contain; margin-bottom: 20px; }
-#modal-title { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin-bottom: 10px; }
-#modal-details { color: #ccc; margin-bottom: 20px; }
+/* --- FIX: COMPLETELY REDESIGNED MODAL --- */
+.modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; padding: 20px; }
+
+.modal-content {
+    background-color: #1E1E1E;
+    width: 100%;
+    max-width: 1100px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column; /* Mobile-first: stack vertically */
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.close-button { position: absolute; top: 15px; right: 25px; color: #aaa; font-size: 35px; font-weight: bold; cursor: pointer; z-index: 10; }
+
+.modal-text-container {
+    padding: 40px;
+    text-align: center; /* Center on mobile */
+}
+.modal-image-container {
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    min-height: 300px;
+}
+#modal-img {
+    max-width: 100%;
+    max-height: 80vh; /* Adjust max height relative to modal */
+    object-fit: contain;
+}
+#modal-title { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin-bottom: 15px; }
+#modal-details { color: #ccc; margin-bottom: 25px; }
+#modal-acquisition-info { font-size: 0.9rem; line-height: 1.5; color: #aaa; }
 #modal-acquisition-info a { color: var(--glow-color-1); }
 .donate-button { display: inline-block; background-color: var(--glow-color-2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; transition: background-color 0.3s ease; }
 
 footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9rem; }
 
+/* --- Responsive fixes --- */
 @media (max-width: 768px) {
-    .glow-title { font-size: 3rem; }
     #gallery-stage { height: 50vh; }
+}
+
+/* On larger screens, switch modal to two-column layout */
+@media (min-width: 800px) {
+    .modal-content {
+        flex-direction: row;
+    }
+    .modal-text-container {
+        flex: 0 0 40%;
+        text-align: left; /* Align text left on desktop */
+        overflow-y: auto;
+    }
+    .modal-image-container {
+        flex: 0 0 60%;
+    }
 }
