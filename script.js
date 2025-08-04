@@ -1,15 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- ARTWORK LIST (Your action item) ---
-    const artworks = [
-        { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic on Canvas', dimensions: '24" x 36"' },
-        { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
-        // ... ALL 25 OF YOUR PIECES MUST BE IN THIS LIST ...
-        { file: 'art03.png', title: 'Title for art03.png', medium: 'Medium', dimensions: '00" x 00"' },
-        { file: 'art04.png', title: 'Title for art04.png', medium: 'Medium', dimensions: '00" x 00"' },
-        { file: 'art05.png', title: 'Title for art05.png', medium: 'Medium', dimensions: '00" x 00"' },
-        // ... etc
-    ];
+   
+    // Corrected and complete artworks array in script.js
+const artworks = [
+    // === YOUR ACTION REQUIRED: EDIT THE DETAILS FOR EACH PIECE ===
+    // Make sure the 'file' name matches your image file exactly.
+    
+    { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic on Canvas', dimensions: '24" x 36"' },
+    { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+    { file: 'art03.png', title: 'Title for art03.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art04.png', title: 'Title for art04.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art05.png', title: 'Title for art05.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art06.png', title: 'Title for art06.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art07.png', title: 'Title for art07.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art08.png', title: 'Title for art08.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art09.png', title: 'Title for art09.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art10.png', title: 'Title for art10.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art11.png', title: 'Title for art11.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art12.png', title: 'Title for art12.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art13.png', title: 'Title for art13.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art14.png', title: 'Title for art14.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art15.png', title: 'Title for art15.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art16.png', title: 'Title for art16.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art17.png', title: 'Title for art17.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art18.png', title: 'Title for art18.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art19.png', title: 'Title for art19.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art20.png', title: 'Title for art20.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art21.png', title: 'Title for art21.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art22.png', title: 'Title for art22.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art23.png', title: 'Title for art23.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art24.png', title: 'Title for art24.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art25.png', title: 'Title for art25.png', medium: 'Medium', dimensions: '00" x 00"' }
+];
 
     // =================================================================
     // === NEW KINETIC WALL LOGIC ===
