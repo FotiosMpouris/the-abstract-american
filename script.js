@@ -4,8 +4,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const artworks = [
         { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic on Canvas', dimensions: '24" x 36"' },
         { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
-        // ... YOU MUST FILL THIS WITH ALL 25 PIECES TO SEE THEM ...
-        { file: 'art25.png', title: 'Final Piece', medium: 'Medium', dimensions: '00" x 00"' }
+        { file: 'art03.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art04.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art05.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art06.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art07.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art08.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art09.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art10.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },        
+        { file: 'art12.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art13.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art14.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
+        { file: 'art15.png', title: 'Final Piece', medium: 'Medium', dimensions: '00" x 00"' }
     ];
 
     // --- Elements ---
