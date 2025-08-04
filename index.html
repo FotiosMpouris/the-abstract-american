@@ -62,13 +62,18 @@
     <div id="art-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">×</span>
-            <img id="modal-img" src="" alt="Artwork">
-            <h3 id="modal-title"></h3>
-            <p id="modal-details"></p>
-            <div id="modal-acquisition-info">
-                <p><strong>Acquisition:</strong> To make this piece part of your story, a contribution through patronage is welcome. All serious offers are considered.</p>
-                <p>After making your crypto donation, please email <a href="mailto:your-email@example.com">your-email@example.com</a> with the transaction details and the artwork title to arrange shipping and handling.</p>
-                <a href="#" target="_blank" class="donate-button">Patronage via Crypto (Coinbase)</a>
+            <!-- FIX: New two-column structure for the modal -->
+            <div class="modal-text-container">
+                <h3 id="modal-title"></h3>
+                <p id="modal-details"></p>
+                <div id="modal-acquisition-info">
+                    <p><strong>Acquisition:</strong> To make this piece part of your story, a contribution through patronage is welcome. All serious offers are considered.</p>
+                    <p>After making your crypto donation, please email <a href="mailto:your-email@example.com">your-email@example.com</a> with the transaction details and the artwork title to arrange shipping and handling.</p>
+                    <a href="#" target="_blank" class="donate-button">Patronage via Crypto (Coinbase)</a>
+                </div>
+            </div>
+            <div class="modal-image-container">
+                <img id="modal-img" src="" alt="Artwork">
             </div>
         </div>
     </div>
