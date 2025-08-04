@@ -1,83 +1,83 @@
 :root { /* ... variables ... */ }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-padding-top: 80px; scroll-behavior: smooth; }
-body { background-color: #121212; color: #E0E0E0; font-family: 'Roboto Condensed', sans-serif; }
-.background-texture { /* ... same as before ... */ }
-#splash-screen { /* ... same as before ... */ }
-#header { /* ... same as before, but maybe hidden on load again */ }
 
-/* --- RE-IMPLEMENTED HERO SECTION --- */
-#hero {
-    height: 100vh;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    scroll-padding-top: 80px; 
+    scroll-behavior: smooth;
+}
+
+body { background-color: #121212; color: #E0E0E0; font-family: 'Roboto Condensed', sans-serif; }
+
+.background-texture { background-image: url('images/background.png'); background-size: cover; position: fixed; width: 100%; height: 100%; opacity: 0.04; z-index: -1; }
+
+/* --- FIX: RESTORED SPLASH SCREEN STYLES --- */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: var(--background-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    overflow: hidden;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
 }
-.hero-frame { /* ... same as before ... */ }
-.glow-title { /* ... same as before ... */ }
+#enter-button {
+    background: none;
+    border: 1px solid #00AFFF;
+    color: #00AFFF;
+    padding: 15px 30px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#enter-button:hover { background-color: #00AFFF; color: #121212; box-shadow: 0 0 20px #00AFFF; }
 
-/* --- NEW RHYTHMIC GALLERY STYLES --- */
-#gallery {
-    padding: 120px 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
+/* Header, Hero Frame, Sections, etc. */
+#header { /* ... */ }
+#hero { height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+.hero-frame { /* ... */ }
+
+/* --- FIX: RESTORED TITLE GLOW ANIMATION --- */
+.glow-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    color: #fff;
+    text-transform: uppercase;
+    animation: glow 4s ease-in-out infinite alternate;
 }
-#gallery h2 { /* ... standard h2 styles ... */ }
-#gallery-stage {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    height: 600px; /* Set a fixed aspect ratio for the stage */
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    overflow: hidden; /* This is crucial */
+@keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00AFFF, 0 0 40px #00AFFF; }
+    to { text-shadow: 0 0 20px #fff, 0 0 30px #FF3B77, 0 0 40px #FF3B77, 0 0 50px #FF3B77; }
 }
+
+/* Rhythmic Gallery Styles */
+#gallery { padding: 120px 5%; display: flex; flex-direction: column; align-items: center; }
+#gallery h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 50px; }
+#gallery-stage { position: relative; width: 100%; max-width: 900px; height: 600px; background-color: #1a1a1a; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; }
 .stage-image {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     cursor: pointer;
-    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1); /* Smooth slide transition */
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
-.stage-image img {
-    width: 100%; height: 100%;
-    object-fit: contain; /* Use 'contain' to never distort art */
-    padding: 20px; /* Give the art some breathing room */
-}
-/* Animation Positions */
+.stage-image img { width: 100%; height: 100%; object-fit: contain; padding: 20px; }
 .stage-image.current { transform: translateX(0); }
 .stage-image.outgoing { transform: translateX(-100%); }
 .stage-image.incoming { transform: translateX(100%); }
 
-/* --- NEW MUSIC CONTROL BUTTON --- */
-#music-control {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 2000;
-}
-#music-button {
-    width: 50px; height: 50px;
-    background-color: rgba(30, 30, 30, 0.8);
-    border: 1px solid #444;
-    border-radius: 50%;
-    color: #E0E0E0;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-#music-button:hover {
-    background-color: #FF3B77;
-    border-color: #FF3B77;
-}
+#music-control { /* ... */ }
 
-/* --- The rest of the page styling (About, Connect, Modal, Footer) is the same --- */
-section { /*...*/ } h2 { /*...*/ } .content-block { /*...*/ } .email-link { /*...*/ } .modal { /*...*/ } footer { /*...*/ }
+/* ... Other styles for About, Connect, Modal, Footer ... */
+
+/* --- FIX: REFINED MOBILE EXPERIENCE --- */
+@media (max-width: 768px) {
+    .glow-title { font-size: 3rem; }
+    #gallery-stage { height: 400px; }
+    .stage-image {
+        /* This makes the slide animation take longer, appearing smoother on small screens */
+        transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+}
