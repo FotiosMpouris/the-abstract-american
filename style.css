@@ -3,168 +3,156 @@
     --background-color: #121212;
     --glow-color-1: #00AFFF;
     --glow-color-2: #FF3B77;
-    --card-bg: #1E1E1E;
+    /* --- NEW: Animation speed based on BPM ---
+    Calculation: 60 seconds / 125 BPM = 0.48s per beat.
+    Animation covers 25 images. Total duration = 25 images * 0.48s/beat * 2 beats/image = 24 seconds.
+    This makes one image pass by every 0.96s, a perfect "2 count".
+    */
+    --scroll-duration: 24s; 
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-    /* FIX: Add padding to top to account for the fixed header, fixing the scroll bug */
-    scroll-padding-top: 80px; 
-    scroll-behavior: smooth;
-}
+html { scroll-padding-top: 80px; scroll-behavior: smooth; }
 
-body {
+body { background-color: var(--background-color); color: var(--primary-color); font-family: 'Roboto Condensed', sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+.background-texture { background-image: url('images/background.png'); background-size: cover; position: fixed; width: 100%; height: 100%; opacity: 0.04; z-index: -1; }
+
+/* --- NEW: Splash Screen --- */
+#splash-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background-color: var(--background-color);
-    color: var(--primary-color);
-    font-family: 'Roboto Condensed', sans-serif;
-    line-height: 1.6;
-}
-
-/* --- NEW: Subtle Background Texture --- */
-.background-texture {
-    background-image: url('images/background.png');
-    background-size: cover;
-    background-position: center center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.04; /* Very subtle! Adjust between 0.02 and 0.05 */
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* --- Header & Dynamic Navigation --- */
-#header {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(18, 18, 18, 0.85);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    padding: 1rem 0;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(-100%);
-    pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-#header.visible {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-nav a { color: var(--primary-color); text-decoration: none; margin: 0 20px; font-size: 1.1rem; font-weight: 400; letter-spacing: 1px; transition: color 0.3s ease, text-shadow 0.3s ease; }
-nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-1); }
-
-/* --- Hero Section & NEW Hero Frame --- */
-#hero {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    padding: 0 20px;
+    z-index: 9999;
+}
+#enter-button {
+    background: none;
+    border: 1px solid var(--glow-color-1);
+    color: var(--glow-color-1);
+    padding: 15px 30px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#enter-button:hover {
+    background-color: var(--glow-color-1);
+    color: var(--background-color);
+    box-shadow: 0 0 20px var(--glow-color-1);
+}
+
+/* --- Header --- */
+#header { position: fixed; width: 100%; top: 0; left: 0; background-color: rgba(18, 18, 18, 0.85); backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 0; text-align: center; }
+nav a { color: var(--primary-color); text-decoration: none; margin: 0 20px; font-size: 1.1rem; letter-spacing: 1px; transition: color 0.3s ease, text-shadow 0.3s ease; }
+nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-1); }
+
+/* --- NEW: Kinetic Wall Section --- */
+#kinetic-wall {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative;
     overflow: hidden;
+    padding: 0;
 }
 
-.hero-frame {
-    position: absolute;
-    inset: 20px; /* Creates a 20px margin from all sides */
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 175, 255, 0.2);
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
+.glow-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 5rem;
+    color: #fff;
+    text-transform: uppercase;
+    animation: glow 4s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 10;
+    text-align: center;
 }
-
-.hero-frame.hidden {
-    opacity: 0;
-}
-
-.glow-title { font-family: 'Orbitron', sans-serif; font-size: 5rem; color: #fff; font-weight: 700; text-transform: uppercase; animation: glow 4s ease-in-out infinite alternate; }
 @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1), 0 0 40px var(--glow-color-1); }
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1); }
     to { text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2); }
 }
 
-/* --- Section Styling --- */
-section { padding: 120px 5%; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid #2a2a2a; }
-section:last-of-type { border-bottom: none; }
-section h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 50px; color: #fff; }
-
-/* --- "Single-File" Gallery with Desktop Updates --- */
-#gallery-container { display: flex; flex-direction: column; align-items: center; gap: 15vh; }
-.art-card { width: 100%; max-width: 700px; text-align: center; cursor: pointer; opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.art-card.is-in-view { opacity: 1; transform: translateY(0); }
-.art-card .image-wrapper { background-color: #1a1a1a; border-radius: 8px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-.art-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: grayscale(100%) brightness(0.7);
-    transition: filter 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s ease;  
+.scroller-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 2% 0;
 }
 
-.art-card.is-in-view img { filter: grayscale(0%) brightness(1); }
-.art-card:hover img { transform: scale(1.03); }
+.scroller {
+    display: flex;
+    width: fit-content; /* Width determined by its content */
+    animation: scroll var(--scroll-duration) linear infinite;
+    animation-play-state: paused; /* Start paused */
+}
 
-.art-details { opacity: 0; transition: opacity 0.8s ease 0.3s; position: relative; padding: 0 50px; }
-.art-card.is-in-view .art-details { opacity: 1; }
-.art-details h3 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 5px; color: #fff; }
-.art-details p { color: #aaa; font-size: 1rem; }
+#scroller-bottom {
+    animation-direction: reverse;
+}
 
-/* --- NEW: Architectural accent lines for desktop --- */
-@media (min-width: 769px) {
-    .art-details::before,
-    .art-details::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 30px;
-        height: 1px;
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-    .art-details::before { left: 0; }
-    .art-details::after { right: 0; }
+.scroller.running {
+    animation-play-state: running;
+}
+.scroller.paused {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } /* Move by half the width (the original 25 images) */
+}
+
+.scroller-art-card {
+    height: 35vh; /* Each row takes up ~35% of the screen height */
+    margin: 0 15px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.scroller-art-card:hover {
+    transform: scale(1.05) translateY(-10px);
+    box-shadow: 0 0 25px var(--glow-color-2);
+}
+.scroller-art-card img {
+    height: 100%;
+    width: auto; /* Maintain aspect ratio */
 }
 
 /* --- About & Connect Sections --- */
+section { padding: 120px 5%; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid #2a2a2a; }
+section:last-of-type { border-bottom: none; }
+section h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 50px; color: #fff; }
 .content-block { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem; }
 .content-block p { margin-bottom: 1.5rem; }
 .email-link { display: inline-block; margin-top: 1rem; padding: 12px 25px; border: 1px solid var(--glow-color-1); color: var(--glow-color-1); text-decoration: none; border-radius: 5px; transition: all 0.3s ease; }
 .email-link:hover { background-color: var(--glow-color-1); color: var(--background-color); box-shadow: 0 0 15px var(--glow-color-1); }
 
-/* --- Modal (Unchanged) --- */
+/* --- Modal --- */
+.modal { display: none; /* ... same as before */ }
+/* (The rest of the modal and footer CSS can remain the same as the previous version) */
 .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
-.modal-content { background-color: var(--card-bg); margin: auto; padding: 30px; border-radius: 8px; max-width: 90%; max-height: 90vh; display: flex; flex-direction: column; position: relative; text-align: center; }
+.modal-content { background-color: #1E1E1E; margin: auto; padding: 30px; border-radius: 8px; max-width: 90%; max-height: 90vh; display: flex; flex-direction: column; position: relative; text-align: center; }
 .close-button { position: absolute; top: 15px; right: 25px; color: #aaa; font-size: 35px; font-weight: bold; cursor: pointer; }
-.close-button:hover { color: white; }
 #modal-img { max-width: 100%; max-height: 60vh; object-fit: contain; margin-bottom: 20px; }
 #modal-title { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; margin-bottom: 10px; }
 #modal-details { color: #ccc; margin-bottom: 20px; }
 #modal-acquisition-info a { color: var(--glow-color-1); }
 .donate-button { display: inline-block; background-color: var(--glow-color-2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; transition: background-color 0.3s ease; }
-.donate-button:hover { background-color: #d12c60; }
-
-/* --- Footer (Unchanged) --- */
 footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9rem; }
 
-/* --- Responsive Design (Unchanged) --- */
 @media (max-width: 768px) {
-    .glow-title { font-size: 3rem; }
-    section h2 { font-size: 2rem; }
-    nav a { margin: 0 10px; font-size: 1rem; }
-    .content-block { font-size: 1.1rem; }
-    .hero-frame { display: none; } /* Hide frame on mobile where it's not needed */
-    .art-details { padding: 0; } /* Remove padding on mobile so text can be full width */
+    .glow-title { font-size: 2.5rem; }
+    .scroller-art-card { height: 25vh; }
 }
