@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentActive) {
             currentActive.classList.remove('active');
             currentActive.classList.add('exiting');
-            setTimeout(() => { if (currentActive) currentActive.remove(); }, 1200);
+            setTimeout(() => { if (currentActive.parentElement) currentActive.remove(); }, 1200);
         }
 
         const art = artworks[currentImageIndex];
@@ -88,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
         modal.style.display = 'flex';
     }
-
-
 
     function closeModal() {
         if (!modal) return;
