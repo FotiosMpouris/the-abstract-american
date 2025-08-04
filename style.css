@@ -3,62 +3,34 @@
     --background-color: #121212;
     --glow-color-1: #00AFFF;
     --glow-color-2: #FF3B77;
-    /* --- NEW: Animation speed based on BPM ---
-    Calculation: 60 seconds / 125 BPM = 0.48s per beat.
-    Animation covers 25 images. Total duration = 25 images * 0.48s/beat * 2 beats/image = 24 seconds.
-    This makes one image pass by every 0.96s, a perfect "2 count".
+    /* --- RHYTHM & TIMING ---
+    BPM: 125. 1 beat = 0.48s. A "3-count" cycle (slide on 1, hold on 2, 3) = 1.44s per step.
+    Total duration for 25 images = 25 steps * 1.44s/step = 36 seconds.
     */
-    --scroll-duration: 24s; 
+    --animation-duration: 36s;
+    --image-count: 25; /* IMPORTANT: This must match the number of images */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-padding-top: 80px; scroll-behavior: smooth; }
-
-body { background-color: var(--background-color); color: var(--primary-color); font-family: 'Roboto Condensed', sans-serif; line-height: 1.6; overflow-x: hidden; }
+body { background-color: var(--background-color); color: var(--primary-color); font-family: 'Roboto Condensed', sans-serif; overflow-x: hidden; }
 
 .background-texture { background-image: url('images/background.png'); background-size: cover; position: fixed; width: 100%; height: 100%; opacity: 0.04; z-index: -1; }
+#splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--background-color); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+#enter-button { background: none; border: 1px solid var(--glow-color-1); color: var(--glow-color-1); padding: 15px 30px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease; }
+#enter-button:hover { background-color: var(--glow-color-1); color: var(--background-color); box-shadow: 0 0 20px var(--glow-color-1); }
 
-/* --- NEW: Splash Screen --- */
-#splash-screen {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: var(--background-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-#enter-button {
-    background: none;
-    border: 1px solid var(--glow-color-1);
-    color: var(--glow-color-1);
-    padding: 15px 30px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-#enter-button:hover {
-    background-color: var(--glow-color-1);
-    color: var(--background-color);
-    box-shadow: 0 0 20px var(--glow-color-1);
-}
-
-/* --- Header --- */
 #header { position: fixed; width: 100%; top: 0; left: 0; background-color: rgba(18, 18, 18, 0.85); backdrop-filter: blur(10px); z-index: 1000; padding: 1rem 0; text-align: center; }
 nav a { color: var(--primary-color); text-decoration: none; margin: 0 20px; font-size: 1.1rem; letter-spacing: 1px; transition: color 0.3s ease, text-shadow 0.3s ease; }
 nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-1); }
 
-/* --- NEW: Kinetic Wall Section --- */
+/* --- KINETIC WALL SECTION (FIXED) --- */
 #kinetic-wall {
     height: 100vh;
+    position: relative; /* Crucial for positioning the title */
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    position: relative;
+    justify-content: center;
     overflow: hidden;
     padding: 0;
 }
@@ -69,14 +41,16 @@ nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-
     color: #fff;
     text-transform: uppercase;
     animation: glow 4s ease-in-out infinite alternate;
-    position: relative;
+    /* FIX: Absolute positioning to overlay on top */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10;
     text-align: center;
+    pointer-events: none; /* Allows clicks to go through to images if needed */
 }
-@keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1); }
-    to { text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2), 0 0 40px var(--glow-color-2); }
-}
+@keyframes glow { from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--glow-color-1); } to { text-shadow: 0 0 20px #fff, 0 0 30px var(--glow-color-2); } }
 
 .scroller-container {
     position: absolute;
@@ -85,63 +59,55 @@ nav a:hover { color: var(--glow-color-1); text-shadow: 0 0 5px var(--glow-color-
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    padding: 2% 0;
+    padding: 1% 0;
 }
 
 .scroller {
     display: flex;
-    width: fit-content; /* Width determined by its content */
-    animation: scroll var(--scroll-duration) linear infinite;
-    animation-play-state: paused; /* Start paused */
-}
-
-#scroller-bottom {
-    animation-direction: reverse;
-}
-
-.scroller.running {
-    animation-play-state: running;
-}
-.scroller.paused {
+    /* Width is 200% because we have two sets of images (25vw * 25 images * 2 sets) */
+    width: calc(var(--image-count) * 2 * 25vw); 
+    /* FIX: Using steps() for the rhythmic slide */
+    animation: rhythmic-scroll var(--animation-duration) steps(var(--image-count), end) infinite;
     animation-play-state: paused;
 }
+#scroller-bottom { animation-direction: reverse; }
+.scroller.running { animation-play-state: running; }
+.scroller.paused { animation-play-state: paused; }
 
-@keyframes scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); } /* Move by half the width (the original 25 images) */
+@keyframes rhythmic-scroll {
+    to { transform: translateX(-50%); }
 }
 
 .scroller-art-card {
-    height: 35vh; /* Each row takes up ~35% of the screen height */
-    margin: 0 15px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    /* FIX: Setting width to 25vw to fit 4 images on screen */
+    width: 25vw;
+    height: auto;
+    flex-shrink: 0; /* Prevents cards from shrinking */
+    padding: 0 15px; /* Adds spacing between images */
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.scroller-art-card:hover {
-    transform: scale(1.05) translateY(-10px);
-    box-shadow: 0 0 25px var(--glow-color-2);
+    transition: transform 0.3s ease;
 }
 .scroller-art-card img {
+    width: 100%;
     height: 100%;
-    width: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensures images fill the space without distortion */
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    transition: box-shadow 0.3s ease;
 }
+.scroller-art-card:hover { transform: scale(1.05); z-index: 5; }
+.scroller-art-card:hover img { box-shadow: 0 0 25px var(--glow-color-2); }
 
-/* --- About & Connect Sections --- */
+
+/* --- About & Connect Sections (Unchanged) --- */
 section { padding: 120px 5%; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid #2a2a2a; }
+/* ... The rest of the CSS for About, Connect, Modal, and Footer can remain the same ... */
 section:last-of-type { border-bottom: none; }
 section h2 { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 50px; color: #fff; }
 .content-block { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.2rem; }
 .content-block p { margin-bottom: 1.5rem; }
 .email-link { display: inline-block; margin-top: 1rem; padding: 12px 25px; border: 1px solid var(--glow-color-1); color: var(--glow-color-1); text-decoration: none; border-radius: 5px; transition: all 0.3s ease; }
 .email-link:hover { background-color: var(--glow-color-1); color: var(--background-color); box-shadow: 0 0 15px var(--glow-color-1); }
-
-/* --- Modal --- */
-.modal { display: none; /* ... same as before */ }
-/* (The rest of the modal and footer CSS can remain the same as the previous version) */
 .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); align-items: center; justify-content: center; }
 .modal-content { background-color: #1E1E1E; margin: auto; padding: 30px; border-radius: 8px; max-width: 90%; max-height: 90vh; display: flex; flex-direction: column; position: relative; text-align: center; }
 .close-button { position: absolute; top: 15px; right: 25px; color: #aaa; font-size: 35px; font-weight: bold; cursor: pointer; }
@@ -154,5 +120,5 @@ footer { text-align: center; padding: 40px 20px; color: #666; font-size: 0.9rem;
 
 @media (max-width: 768px) {
     .glow-title { font-size: 2.5rem; }
-    .scroller-art-card { height: 25vh; }
+    .scroller-art-card { width: 60vw; } /* On mobile, show fewer images at a time */
 }
