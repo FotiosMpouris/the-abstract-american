@@ -6,9 +6,9 @@ const artworks = [
     // === YOUR ACTION REQUIRED: EDIT THE DETAILS FOR EACH PIECE ===
     // Make sure the 'file' name matches your image file exactly.
     
-    { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic on Canvas', dimensions: '24" x 36"' },
-    { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor on Paper', dimensions: '18" x 24"' },
-    { file: 'art03.png', title: 'Title for art03.png', medium: 'Medium', dimensions: '00" x 00"' },
+    { file: 'art01.png', title: 'The Independent Fox', medium: 'gouache on canvas', dimensions: '24" x 36"' },
+    { file: 'art02.png', title: 'The American Dream', medium: 'gouache on canvas', dimensions: '16" x 20"' },
+    { file: 'art03.png', title: 'What Time Is It', medium: 'Medium', dimensions: '00" x 00"' },
     { file: 'art04.png', title: 'Title for art04.png', medium: 'Medium', dimensions: '00" x 00"' },
     { file: 'art05.png', title: 'Title for art05.png', medium: 'Medium', dimensions: '00" x 00"' },
     { file: 'art06.png', title: 'Title for art06.png', medium: 'Medium', dimensions: '00" x 00"' },
