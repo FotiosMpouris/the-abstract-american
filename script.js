@@ -87,11 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.textContent = art.title;
         modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
         modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background from scrolling
     }
 
     function closeModal() {
         if (!modal) return;
         modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Re-enable background scrolling
         startGallery();
     }
 
