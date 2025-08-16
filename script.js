@@ -1,177 +1,227 @@
-document.addEventListener('DOMContentLoaded', () => {
+/* ========= The Abstract American =========
+   Carousel with transporter-like transitions
+   - Desktop: 3 visible, Tablet: 2, Mobile: 1
+   - Auto-play + buttons + dots + swipe
+==========================================*/
 
-    const artworks = [
-        { file: 'art01.png', title: 'Chromatic Pulse', medium: 'Acrylic', dimensions: '24" x 36"' }, { file: 'art02.png', title: 'Urban Dreamscape', medium: 'Watercolor', dimensions: '18" x 24"' }, { file: 'art03.png', title: 'Artwork Title 03', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art04.png', title: 'Artwork Title 04', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art05.png', title: 'Artwork Title 05', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art06.png', title: 'Artwork Title 06', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art07.png', title: 'Artwork Title 07', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art08.png', title: 'Artwork Title 08', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art09.png', title: 'Artwork Title 09', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art10.png', title: 'Artwork Title 10', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art11.png', title: 'Artwork Title 11', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art12.png', title: 'Artwork Title 12', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art13.png', title: 'Artwork Title 13', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art14.png', title: 'Artwork Title 14', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art15.png', title: 'Artwork Title 15', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art16.png', title: 'Artwork Title 16', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art17.png', title: 'Artwork Title 17', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art18.png', title: 'Artwork Title 18', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art19.png', title: 'Artwork Title 19', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art20.png', title: 'Artwork Title 20', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art21.png', title: 'Artwork Title 21', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art22.png', title: 'Artwork Title 22', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art23.png', title: 'Artwork Title 23', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art24.png', title: 'Artwork Title 24', medium: 'Medium', dimensions: '00" x 00"' }, { file: 'art25.png', title: 'Artwork Title 25', medium: 'Medium', dimensions: '00" x 00"' }
-    ];
+// 1) Year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
 
-    const header = document.getElementById('header');
-    const mainTitle = document.querySelector('.main-title');
-    const galleryGrid = document.getElementById('gallery-grid');
-    const modal = document.getElementById('art-modal');
-    const modalImg = document.getElementById('modal-img');
-    const modalTitle = document.getElementById('modal-title');
-    const modalDetails = document.getElementById('modal-details');
-    const modalClose = document.getElementById('modal-close');
-    const modalPrev = document.getElementById('modal-prev');
-    const modalNext = document.getElementById('modal-next');
+// 2) Build image list automatically (ART01..ART25.png)
+const TOTAL_IMAGES = 25;
+const IMG_PREFIX = 'images/ART';
+const IMG_EXT = '.png';
 
-    let currentModalIndex = 0;
-    let galleryInterval = null;
-    let galleryIndex = 0;
-    const cycleTime = 5000;
+// Pads to two digits (01..25)
+const pad2 = n => String(n).padStart(2, '0');
 
-    // --- Dynamic Header and Theme Change on Scroll ---
-    const warpSection = document.getElementById('warp-drive');
-    const scrollObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                document.body.classList.add('light-theme');
-                header.classList.add('scrolled');
-                mainTitle.classList.add('scrolled');
-            } else {
-                if(entry.boundingClientRect.top > 0) {
-                    document.body.classList.remove('light-theme');
-                    header.classList.remove('scrolled');
-                    mainTitle.classList.remove('scrolled');
-                }
-            }
-        });
-    }, { threshold: 0.1 });
-    if(warpSection) scrollObserver.observe(warpSection);
+const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
+  src: `${IMG_PREFIX}${pad2(i + 1)}${IMG_EXT}`,
+  alt: `Artwork ${i + 1}`,
+  label: `ART ${pad2(i + 1)}`
+}));
 
-    // --- Gallery Logic ---
-    function populateGallery() {
-        if (!galleryGrid) return;
-        galleryGrid.innerHTML = '';
-        const itemsPerCycle = window.innerWidth >= 769 ? 3 : 1;
-        
-        for (let i = 0; i < itemsPerCycle; i++) {
-            const artIndex = (galleryIndex + i) % artworks.length;
-            if (!artworks[artIndex]) continue; // Safety check
-            const art = artworks[artIndex];
-            const item = document.createElement('div');
-            item.className = 'gallery-item';
-            item.style.animationDelay = `${i * 150}ms`;
-            item.innerHTML = `<img src="images/${art.file}" alt="${art.title}" loading="lazy">`;
-            item.addEventListener('click', () => {
-                currentModalIndex = artIndex;
-                openModal();
-            });
-            galleryGrid.appendChild(item);
-        }
-        galleryIndex = (galleryIndex + itemsPerCycle) % artworks.length;
-    }
+// 3) DOM refs
+const track = document.getElementById('carouselTrack');
+const dotsWrap = document.getElementById('carouselDots');
+const prevBtn = document.querySelector('.nav.prev');
+const nextBtn = document.querySelector('.nav.next');
+const viewport = document.querySelector('.track-viewport');
 
-    function startGalleryCycle() {
-        if (galleryInterval) clearInterval(galleryInterval);
-        populateGallery();
-        galleryInterval = setInterval(populateGallery, cycleTime);
-    }
+// 4) State
+let currentIndex = 0;
+let slidesPerView = getSlidesPerView();
+let autoTimer = null;
+const AUTO_MS = 4200;
+const TRANS_MS = 520; // keep in sync with CSS keyframes
 
-    // --- Modal Logic ---
-    function updateModalContent() {
-        const art = artworks[currentModalIndex];
-        modalImg.src = `images/${art.file}`;
-        modalTitle.textContent = art.title;
-        modalDetails.textContent = `${art.medium} | ${art.dimensions}`;
-    }
+// 5) Build slides
+function buildSlides() {
+  track.innerHTML = '';
+  images.forEach((img, i) => {
+    const li = document.createElement('li');
+    li.className = 'slide';
+    li.setAttribute('role', 'group');
+    li.setAttribute('aria-label', `${i + 1} of ${images.length}`);
 
-    function openModal() {
-        updateModalContent();
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        clearInterval(galleryInterval);
-    }
+    const image = document.createElement('img');
+    image.loading = i > slidesPerView ? 'lazy' : 'eager';
+    image.src = img.src;
+    image.alt = img.alt;
 
-    function closeModal() {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-        startGalleryCycle();
-    }
-    
-    modalPrev.addEventListener('click', () => {
-        currentModalIndex = (currentModalIndex - 1 + artworks.length) % artworks.length;
-        updateModalContent();
-    });
-    modalNext.addEventListener('click', () => {
-        currentModalIndex = (currentModalIndex + 1) % artworks.length;
-        updateModalContent();
-    });
-    modalClose.addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    const badge = document.createElement('span');
+    badge.className = 'label';
+    badge.textContent = img.label;
 
-    // --- Navigation ---
-    document.querySelectorAll('a.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-        });
-    });
+    li.appendChild(image);
+    li.appendChild(badge);
+    track.appendChild(li);
 
-    // --- Warp Drive Starfield Canvas Animation ---
-    const canvas = document.getElementById('starfield-canvas');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        let speed = 2;
+    // open image in a new tab (simple lightbox behavior)
+    li.addEventListener('click', () => window.open(img.src, '_blank'));
+  });
+}
+buildSlides();
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for (let i = 0; i < 400; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    z: Math.random() * canvas.width
-                });
-            }
-        }
+// 6) Build dots
+function buildDots() {
+  dotsWrap.innerHTML = '';
+  const pages = Math.ceil(images.length / slidesPerView);
+  for (let i = 0; i < pages; i++) {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', `Go to set ${i + 1}`);
+    b.addEventListener('click', () => goToPage(i));
+    dotsWrap.appendChild(b);
+  }
+  updateDots();
+}
+buildDots();
 
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.beginPath();
-            stars.forEach(star => {
-                let sx = (star.x - canvas.width / 2) * (canvas.width / star.z) + canvas.width / 2;
-                let sy = (star.y - canvas.height / 2) * (canvas.width / star.z) + canvas.height / 2;
-                let radius = Math.max(0, (1 - star.z / canvas.width) * 2);
-                ctx.rect(sx, sy, radius, radius);
-            });
-            ctx.fill();
-        }
+function updateDots() {
+  const page = Math.floor(currentIndex / slidesPerView);
+  [...dotsWrap.children].forEach((d, i) => {
+    d.setAttribute('aria-current', i === page ? 'true' : 'false');
+  });
+}
 
-        function updateStars() {
-            stars.forEach(star => {
-                star.z -= speed;
-                if (star.z <= 0) {
-                    star.z = canvas.width;
-                }
-            });
-        }
+// 7) Layout helper
+function getSlidesPerView() {
+  const w = window.innerWidth;
+  if (w <= 680) return 1;
+  if (w <= 1024) return 2;
+  return 3;
+}
 
-        function animate() {
-            updateStars();
-            drawStars();
-            requestAnimationFrame(animate);
-        }
-        
-        const warpObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const scrollRatio = entry.intersectionRatio;
-                    speed = 2 + scrollRatio * 30; // Accelerate based on how much is visible
-                } else {
-                    speed = 2;
-                }
-            });
-        }, { threshold: Array.from(Array(101).keys(), i => i / 100) });
-        
-        warpObserver.observe(warpSection);
-        resizeCanvas();
-        animate();
-        window.addEventListener('resize', resizeCanvas);
-    }
-    
-    startGalleryCycle();
+// 8) Navigation
+function prev() {
+  stopAuto();
+  const step = slidesPerView;
+  currentIndex = Math.max(0, currentIndex - step);
+  animateMove('prev');
+  startAuto();
+}
+function next() {
+  stopAuto();
+  const step = slidesPerView;
+  const maxStart = Math.max(0, images.length - slidesPerView);
+  currentIndex = Math.min(maxStart, currentIndex + step);
+  animateMove('next');
+  startAuto();
+}
+prevBtn.addEventListener('click', prev);
+nextBtn.addEventListener('click', next);
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prev();
+  if (e.key === 'ArrowRight') next();
 });
+
+// 9) Animate slide move with transporter effect
+function animateMove(direction) {
+  const slides = [...track.children];
+  slides.forEach(s => s.classList.remove('exit-left','enter-right','is-transporting'));
+  viewport.classList.remove('pulse');
+  void track.offsetWidth; // reflow for restart
+
+  // mark visible range before move (for exit animation)
+  const start = currentIndex;
+  const end = Math.min(start + slidesPerView - 1, images.length - 1);
+
+  // Approximate width of one card (including gap)
+  const gap = parseFloat(getComputedStyle(track).getPropertyValue('--gap')) || 16;
+  const card = slides[0];
+  const cardWidth = card ? card.getBoundingClientRect().width : 0;
+  const offsetX = -(cardWidth + gap) * start;
+
+  // apply exit-left to currently visible (for a nicer effect)
+  for (let i = start; i <= end; i++) {
+    if (slides[i]) {
+      slides[i].classList.add('is-transporting', 'enter-right'); // pre-state for after move
+    }
+  }
+
+  // move the track
+  track.style.transition = `transform ${TRANS_MS}ms cubic-bezier(.2,.65,.25,1)`;
+  track.style.transform = `translate3d(${offsetX}px,0,0)`;
+
+  // after the transform finishes, toggle classes to finalize state
+  setTimeout(() => {
+    slides.forEach(s => s.classList.remove('enter-right','exit-left','is-transporting'));
+    updateDots();
+  }, TRANS_MS);
+}
+
+// 10) Jump to a page (dot controls)
+function goToPage(pageIndex) {
+  stopAuto();
+  const step = slidesPerView;
+  currentIndex = Math.min(images.length - step, Math.max(0, pageIndex * step));
+  animateMove();
+  startAuto();
+}
+
+// 11) Autoplay
+function startAuto(){
+  stopAuto();
+  autoTimer = setInterval(() => {
+    const step = slidesPerView;
+    const maxStart = Math.max(0, images.length - slidesPerView);
+    if (currentIndex >= maxStart) {
+      currentIndex = 0;
+    } else {
+      currentIndex += step;
+    }
+    animateMove('next');
+  }, AUTO_MS);
+}
+function stopAuto(){
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+}
+startAuto();
+
+// 12) Resize handling (recompute pages & positions)
+let resizeTO = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTO);
+  resizeTO = setTimeout(() => {
+    const oldSPV = slidesPerView;
+    slidesPerView = getSlidesPerView();
+    // rebuild dots only if the per-view count changed
+    if (oldSPV !== slidesPerView) {
+      buildDots();
+      // snap to the page boundary to avoid “half pages”
+      currentIndex = Math.floor(currentIndex / slidesPerView) * slidesPerView;
+    }
+    // force transform recalculation
+    animateMove();
+  }, 120);
+});
+
+// 13) Touch / swipe (mobile)
+let touchStartX = 0;
+let touchDeltaX = 0;
+viewport.addEventListener('touchstart', (e) => {
+  stopAuto();
+  touchStartX = e.touches[0].clientX;
+  touchDeltaX = 0;
+}, { passive:true });
+
+viewport.addEventListener('touchmove', (e) => {
+  touchDeltaX = e.touches[0].clientX - touchStartX;
+}, { passive:true });
+
+viewport.addEventListener('touchend', () => {
+  const THRESH = 50; // px
+  if (touchDeltaX > THRESH) prev();
+  else if (touchDeltaX < -THRESH) next();
+  startAuto();
+});
+
+// 14) Initial snap
+requestAnimationFrame(() => animateMove());
+
+/* ===== Optional: if your flag image has a different path/name =====
+   Update .hero__backdrop in style.css to match, e.g.:
+   background: ..., url('images/your-flag.png') center/cover no-repeat;
+*/
