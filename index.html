@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Abstract American</title>
-  <meta name="description" content="A sci-fi/steampunk inspired art gallery by The Abstract American." />
+  <meta name="description" content="A sci-fi/steampunk tinged gallery from planet Earth." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
   <main id="gallery" class="gallery-section" aria-label="Artwork gallery">
     <div class="section-title">
       <h2>Gallery</h2>
-      <p>Click any image to view it larger.</p>
+      <p>Click any image to enter image mode and navigate.</p>
     </div>
 
     <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Artwork carousel">
@@ -47,24 +47,24 @@
     <div class="section-title"><h2>About</h2></div>
     <div class="about__content metal-card">
       <p>
-        The Abstract American is an evolving gallery of vibrant PNG artworks with a
-        sci-fi/steampunk pulse. It’s meant to feel <em>alive</em> — neon edges, metallic
-        reflections, and a gentle holographic shimmer. Scroll, click, and talk about what you feel.
-        Conversation over commerce.
+        Hi — I’m a human from planet Earth making images that mix the familiar with the slightly impossible.
+        Think city light, rust, coastline, circuitry — sometimes sci-fi, sometimes not — always guided by
+        color, texture, and play. The “Abstract American” tag is a lens, not a rulebook.
       </p>
       <p>
-        The site is intentionally light and responsive, designed to showcase art crisply on phones,
-        tablets, and desktops. New pieces are added regularly — keep an eye on the carousel.
+        This site aims to feel alive: subtle neon edges, metallic whispers, a touch of hologram.
+        The goal isn’t selling; it’s starting conversations. If a piece nudges a memory or a question,
+        that’s the win. Thanks for spending a moment here.
       </p>
     </div>
   </section>
 
-  <!-- COLORFOTIFOTI PROMO + CONTACT -->
+  <!-- CONNECT (ColorFotiFoti + Contact) -->
   <section id="contact" class="contact-section" aria-label="ColorFotiFoti promo and contact">
     <div class="section-title"><h2>Connect</h2></div>
 
     <div class="contact__grid">
-      <!-- LEFT: ColorFotiFoti promo (replaces Say hello) -->
+      <!-- Promo -->
       <div class="metal-card promo-card">
         <div class="promo-header">
           <img src="images/colorfoti.png" alt="ColorFotiFoti" class="promo-logo" />
@@ -86,8 +86,8 @@
         <a class="cta promo-link" href="https://colorfotifoti.com" target="_blank" rel="noopener">Visit ColorFotiFoti</a>
       </div>
 
-      <!-- RIGHT: Contact form (Formspree action stays as you configured) -->
-      <form class="metal-card contact-form" action="https://formspree.io/f/your-id" method="POST">
+      <!-- Contact form -->
+      <form class="metal-card contact-form" action="https://formspree.io/f/xovlzvgd" method="POST">
         <h3>Quick note</h3>
         <label>
           Name
@@ -116,6 +116,22 @@
     </nav>
     <p>&copy; <span id="year"></span> The Abstract American</p>
   </footer>
+
+  <!-- LIGHTBOX (Image Mode) -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close" id="lbClose" aria-label="Close image mode">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous image">&#10094;</button>
+    <figure class="lb-frame" id="lbFrame" role="group" aria-label="Expanded artwork">
+      <img id="lbImage" alt="" />
+      <figcaption class="lb-caption">
+        <div class="lb-title" id="lbTitle"></div>
+        <div class="lb-desc" id="lbDesc"></div>
+        <div class="lb-count" id="lbCount"></div>
+      </figcaption>
+      <div class="lb-flare" aria-hidden="true"></div>
+    </figure>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">&#10095;</button>
+  </div>
 
   <script src="script.js" defer></script>
 </body>
