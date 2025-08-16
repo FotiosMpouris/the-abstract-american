@@ -40,7 +40,7 @@ body{
   position:absolute; inset:0;
   background:
     linear-gradient(to bottom, rgba(10,12,18,0.35), rgba(10,12,18,.65)),
-    url('images/flag.jpg') center/cover no-repeat;
+    url('images/background.png') center/cover no-repeat;
   filter: saturate(85%) brightness(80%) contrast(105%);
   opacity:.45;                 /* translucent flag */
 }
