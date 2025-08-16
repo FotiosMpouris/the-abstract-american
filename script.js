@@ -16,20 +16,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentModalIndex = 0;
     let galleryInterval = null;
     let galleryIndex = 0;
-    const itemsPerCycle = window.innerWidth >= 769 ? 3 : 1;
     const cycleTime = 5000;
 
     function populateGallery() {
         if (!galleryGrid) return;
-        galleryGrid.innerHTML = ''; // Clear existing items
+        galleryGrid.innerHTML = ''; 
+        const itemsPerCycle = window.innerWidth >= 769 ? 3 : 1;
 
         for (let i = 0; i < itemsPerCycle; i++) {
             const artIndex = (galleryIndex + i) % artworks.length;
             const art = artworks[artIndex];
+            if (!art) continue; 
+            
             const item = document.createElement('div');
             item.className = 'gallery-item';
             item.style.animationDelay = `${i * 150}ms`;
-            item.innerHTML = `<img src="images/${art.file}" alt="${art.title}">`;
+            item.innerHTML = `<img src="images/${art.file}" alt="${art.title}" loading="lazy">`;
             item.addEventListener('click', () => {
                 currentModalIndex = artIndex;
                 openModal();
@@ -58,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(galleryInterval);
     }
 
+
+
     function closeModal() {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
@@ -76,6 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalClose.addEventListener('click', closeModal);
     window.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    window.addEventListener('keydown', (event) => { if(event.key === 'Escape') closeModal(); });
+
 
     document.querySelectorAll('a.nav-link').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
