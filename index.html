@@ -1,81 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Abstract American</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Abstract American</title>
+  <meta name="description" content="A sci-fi/steampunk inspired art gallery by The Abstract American." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Futuristic display font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header id="header">
-        <nav>
-            <a href="#hero" class="nav-link">Title</a>
-            <a href="#gallery" class="nav-link">Gallery</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#connect" class="nav-link">Connect</a>
-        </nav>
-    </header>
 
-    <main>
-        <section id="hero">
-            <div class="hero-background"></div>
-            <h1 class="main-title">The Abstract American</h1>
-        </section>
+  <!-- HERO / TITLE -->
+  <header class="hero" id="home" aria-label="Site header with flag background">
+    <div class="hero__backdrop" aria-hidden="true"></div>
+    <div class="hero__veil" aria-hidden="true"></div>
 
-        <section id="warp-drive">
-            <canvas id="starfield-canvas"></canvas>
-        </section>
+    <div class="hero__inner">
+      <h1 class="logo" aria-label="The Abstract American">The Abstract American</h1>
+      <p class="tagline">sci-fi glow • modern holograms • conversation over commerce</p>
 
-        <section id="gallery">
-            <div id="gallery-grid">
-                <!-- Artworks will be inserted here by JavaScript -->
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>About</h2>
-            <div class="content-block">
-                <p>Art is not a simple creation; it is an exorcism. It's the process of sorting through the difficult, beautiful stages of love and hate as a piece comes together, managing through chaos to find what is true.</p>
-            </div>
-        </section>
-
-        <section id="connect">
-            <h2>Connect</h2>
-            <div class="content-block">
-                <p>If my work resonates with you on a deeper level and you wish to begin a conversation about a potential project or acquisition, you are invited to reach out.</p>
-                <a href="mailto:your-email@example.com" class="email-link">Begin the Conversation</a>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <p>&copy; 2024 The Abstract American. All Rights Reserved.</p>
-    </footer>
-
-    <div id="art-modal" class="modal">
-        <div class="modal-content">
-            <span id="modal-close" class="modal-control">&times;</span>
-            <button id="modal-prev" class="modal-control modal-arrow">&lt;</button>
-            <button id="modal-next" class="modal-control modal-arrow">&gt;</button>
-            
-            <div class="modal-image-container">
-                <img id="modal-img" src="" alt="Artwork">
-            </div>
-            <div class="modal-text-container">
-                <h3 id="modal-title"></h3>
-                <p id="modal-details"></p>
-                <div id="modal-acquisition-info">
-                    <p><strong>Acquisition:</strong> To make this piece part of your story, a contribution through patronage is welcome. All serious offers are considered.</p>
-                    <p>After making your crypto donation, please email <a href="mailto:your-email@example.com">your-email@example.com</a> with the transaction details and the artwork title.</p>
-                    <a href="#" target="_blank" class="donate-button">Patronage via Crypto (Coinbase)</a>
-                </div>
-            </div>
-        </div>
+      <a class="cta" href="#gallery" aria-label="Jump to Gallery">Enter gallery</a>
     </div>
 
-    <script src="script.js"></script>
+    <!-- soft scroll cue -->
+    <div class="scroll-indicator" aria-hidden="true">
+      <span></span>
+    </div>
+  </header>
+
+  <!-- GALLERY -->
+  <main id="gallery" class="gallery-section" aria-label="Artwork gallery">
+    <div class="section-title">
+      <h2>Gallery</h2>
+      <p>Click any image to view it larger.</p>
+    </div>
+
+    <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Artwork carousel">
+      <button class="nav prev" aria-label="Previous artworks" title="Previous">&#10094;</button>
+
+      <div class="track-viewport" aria-live="polite">
+        <ul class="track" id="carouselTrack">
+          <!-- Slides generated by script.js -->
+        </ul>
+
+        <!-- Hologram noise overlay for transporter vibe -->
+        <div class="holo-noise" aria-hidden="true"></div>
+      </div>
+
+      <button class="nav next" aria-label="Next artworks" title="Next">&#10095;</button>
+    </div>
+
+    <!-- Dots (pagination); generated in JS -->
+    <div class="dots" id="carouselDots" aria-label="Carousel pagination"></div>
+  </main>
+
+  <!-- ABOUT -->
+  <section id="about" class="about-section" aria-label="About The Abstract American">
+    <div class="section-title">
+      <h2>About</h2>
+    </div>
+    <div class="about__content metal-card">
+      <p>
+        The Abstract American is an evolving gallery of vibrant PNG artworks with a
+        sci-fi/steampunk pulse. It’s meant to feel <em>alive</em> — neon edges, metallic
+        reflections, and a gentle holographic shimmer. Scroll, click, and talk about what you feel.
+        That’s the point here: conversation over commerce.
+      </p>
+      <p>
+        The site is intentionally light and responsive, designed to showcase art crisply on phones,
+        tablets, and desktops. New pieces are added regularly — keep an eye on the carousel.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section" aria-label="Contact or start a conversation">
+    <div class="section-title">
+      <h2>Contact</h2>
+    </div>
+
+    <div class="contact__grid">
+      <div class="metal-card">
+        <h3>Say hello</h3>
+        <p>Want to react to a piece or ask about the process? Open a thread:</p>
+        <p><a class="link" href="mailto:hello@theabstractamerican.com?subject=The%20Abstract%20American%20—%20Let%27s%20Talk">hello@theabstractamerican.com</a></p>
+      </div>
+
+      <form class="metal-card contact-form" action="https://formspree.io/f/your-id" method="POST">
+        <!-- Tip: replace the action with your form endpoint (Formspree / Basin / Netlify) -->
+        <h3>Quick note</h3>
+        <label>
+          Name
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+        <button type="submit" class="cta small">Send</button>
+        <p class="form-hint">No spam. Just ideas.</p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <nav class="footer-nav">
+      <a href="#home">Top</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <p>&copy; <span id="year"></span> The Abstract American</p>
+  </footer>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
