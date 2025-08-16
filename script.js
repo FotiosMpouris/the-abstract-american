@@ -1,18 +1,18 @@
 /* ========= The Abstract American =========
-   Carousel with transporter-like transitions
-   - Desktop: 3 visible, Tablet: 2, Mobile: 1
-   - Auto-play + buttons + dots + swipe
+   MAIN CAROUSEL (art##.png) + MINI CAROUSEL (artcycle##.png)
+   - Desktop: 3 visible, Tablet: 2, Mobile: 1 (main carousel)
+   - Mini carousel: 1-up, autoplay
 ==========================================*/
 
-// 1) Year in footer
+// ---- Footer year ----
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// 2) Build image list automatically (ART01..ART25.png)
-const TOTAL_IMAGES = 25;
-const IMG_PREFIX = 'images/art';
+/* =========================================================
+   MAIN CAROUSEL CONFIG (update these if your naming changes)
+========================================================= */
+const TOTAL_IMAGES = 25;            // number of gallery images
+const IMG_PREFIX = 'images/art';    // lowercase as per your update
 const IMG_EXT = '.png';
-
-// Pads to two digits (01..25)
 const pad2 = n => String(n).padStart(2, '0');
 
 const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
@@ -21,21 +21,21 @@ const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
   label: `ART ${pad2(i + 1)}`
 }));
 
-// 3) DOM refs
+// DOM refs
 const track = document.getElementById('carouselTrack');
 const dotsWrap = document.getElementById('carouselDots');
 const prevBtn = document.querySelector('.nav.prev');
 const nextBtn = document.querySelector('.nav.next');
 const viewport = document.querySelector('.track-viewport');
 
-// 4) State
+// State
 let currentIndex = 0;
 let slidesPerView = getSlidesPerView();
 let autoTimer = null;
 const AUTO_MS = 4200;
-const TRANS_MS = 520; // keep in sync with CSS keyframes
+const TRANS_MS = 520;
 
-// 5) Build slides
+// Build slides
 function buildSlides() {
   track.innerHTML = '';
   images.forEach((img, i) => {
@@ -57,13 +57,12 @@ function buildSlides() {
     li.appendChild(badge);
     track.appendChild(li);
 
-    // open image in a new tab (simple lightbox behavior)
     li.addEventListener('click', () => window.open(img.src, '_blank'));
   });
 }
 buildSlides();
 
-// 6) Build dots
+// Dots
 function buildDots() {
   dotsWrap.innerHTML = '';
   const pages = Math.ceil(images.length / slidesPerView);
@@ -84,7 +83,6 @@ function updateDots() {
   });
 }
 
-// 7) Layout helper
 function getSlidesPerView() {
   const w = window.innerWidth;
   if (w <= 680) return 1;
@@ -92,7 +90,6 @@ function getSlidesPerView() {
   return 3;
 }
 
-// 8) Navigation
 function prev() {
   stopAuto();
   const step = slidesPerView;
@@ -111,48 +108,31 @@ function next() {
 prevBtn.addEventListener('click', prev);
 nextBtn.addEventListener('click', next);
 
-// Keyboard
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') prev();
   if (e.key === 'ArrowRight') next();
 });
 
-// 9) Animate slide move with transporter effect
-function animateMove(direction) {
+function animateMove() {
   const slides = [...track.children];
   slides.forEach(s => s.classList.remove('exit-left','enter-right','is-transporting'));
-  viewport.classList.remove('pulse');
-  void track.offsetWidth; // reflow for restart
+  void track.offsetWidth;
 
-  // mark visible range before move (for exit animation)
   const start = currentIndex;
-  const end = Math.min(start + slidesPerView - 1, images.length - 1);
-
-  // Approximate width of one card (including gap)
   const gap = parseFloat(getComputedStyle(track).getPropertyValue('--gap')) || 16;
   const card = slides[0];
   const cardWidth = card ? card.getBoundingClientRect().width : 0;
   const offsetX = -(cardWidth + gap) * start;
 
-  // apply exit-left to currently visible (for a nicer effect)
-  for (let i = start; i <= end; i++) {
-    if (slides[i]) {
-      slides[i].classList.add('is-transporting', 'enter-right'); // pre-state for after move
-    }
-  }
-
-  // move the track
   track.style.transition = `transform ${TRANS_MS}ms cubic-bezier(.2,.65,.25,1)`;
   track.style.transform = `translate3d(${offsetX}px,0,0)`;
 
-  // after the transform finishes, toggle classes to finalize state
   setTimeout(() => {
     slides.forEach(s => s.classList.remove('enter-right','exit-left','is-transporting'));
     updateDots();
   }, TRANS_MS);
 }
 
-// 10) Jump to a page (dot controls)
 function goToPage(pageIndex) {
   stopAuto();
   const step = slidesPerView;
@@ -161,17 +141,12 @@ function goToPage(pageIndex) {
   startAuto();
 }
 
-// 11) Autoplay
 function startAuto(){
   stopAuto();
   autoTimer = setInterval(() => {
     const step = slidesPerView;
     const maxStart = Math.max(0, images.length - slidesPerView);
-    if (currentIndex >= maxStart) {
-      currentIndex = 0;
-    } else {
-      currentIndex += step;
-    }
+    currentIndex = currentIndex >= maxStart ? 0 : currentIndex + step;
     animateMove('next');
   }, AUTO_MS);
 }
@@ -180,48 +155,126 @@ function stopAuto(){
 }
 startAuto();
 
-// 12) Resize handling (recompute pages & positions)
+// Resize handling
 let resizeTO = null;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTO);
   resizeTO = setTimeout(() => {
     const oldSPV = slidesPerView;
     slidesPerView = getSlidesPerView();
-    // rebuild dots only if the per-view count changed
     if (oldSPV !== slidesPerView) {
       buildDots();
-      // snap to the page boundary to avoid “half pages”
       currentIndex = Math.floor(currentIndex / slidesPerView) * slidesPerView;
     }
-    // force transform recalculation
     animateMove();
   }, 120);
 });
 
-// 13) Touch / swipe (mobile)
-let touchStartX = 0;
-let touchDeltaX = 0;
-viewport.addEventListener('touchstart', (e) => {
-  stopAuto();
-  touchStartX = e.touches[0].clientX;
-  touchDeltaX = 0;
-}, { passive:true });
-
-viewport.addEventListener('touchmove', (e) => {
-  touchDeltaX = e.touches[0].clientX - touchStartX;
-}, { passive:true });
-
+// Touch / swipe
+let touchStartX = 0, touchDeltaX = 0;
+viewport.addEventListener('touchstart', (e) => { stopAuto(); touchStartX = e.touches[0].clientX; touchDeltaX = 0; }, { passive:true });
+viewport.addEventListener('touchmove', (e) => { touchDeltaX = e.touches[0].clientX - touchStartX; }, { passive:true });
 viewport.addEventListener('touchend', () => {
-  const THRESH = 50; // px
+  const THRESH = 50;
   if (touchDeltaX > THRESH) prev();
   else if (touchDeltaX < -THRESH) next();
   startAuto();
 });
-
-// 14) Initial snap
 requestAnimationFrame(() => animateMove());
 
-/* ===== Optional: if your flag image has a different path/name =====
-   Update .hero__backdrop in style.css to match, e.g.:
-   background: ..., url('images/your-flag.png') center/cover no-repeat;
-*/
+/* =========================================================
+   MINI CAROUSEL: ColorFotiFoti preview
+   - files: images/artcycle01.png ... images/artcycle05.png
+   - to add more: just change TOTAL_CYCLE_IMAGES
+========================================================= */
+const TOTAL_CYCLE_IMAGES = 5;               // <— bump this if you add more
+const CYCLE_PREFIX = 'images/artcycle';
+const CYCLE_EXT = '.png';
+
+const miniTrack = document.getElementById('miniTrack');
+const miniDots = document.getElementById('miniDots');
+const miniPrev = document.querySelector('.mini-prev');
+const miniNext = document.querySelector('.mini-next');
+
+if (miniTrack && miniDots && miniPrev && miniNext) {
+  const previews = Array.from({ length: TOTAL_CYCLE_IMAGES }, (_, i) => ({
+    src: `${CYCLE_PREFIX}${pad2(i + 1)}${CYCLE_EXT}`,
+    alt: `ColorFotiFoti preview ${i + 1}`
+  }));
+
+  // Build slides
+  previews.forEach((p, i) => {
+    const li = document.createElement('li');
+    li.className = 'mini-slide';
+    const img = document.createElement('img');
+    img.src = p.src;
+    img.alt = p.alt;
+    li.appendChild(img);
+    miniTrack.appendChild(li);
+  });
+
+  // Build dots
+  previews.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', `Go to preview ${i + 1}`);
+    b.addEventListener('click', () => goMini(i));
+    miniDots.appendChild(b);
+  });
+
+  let miniIndex = 0;
+  const MINI_AUTO_MS = 3800;
+  let miniTimer = null;
+
+  function updateMiniDots() {
+    [...miniDots.children].forEach((d, i) => {
+      d.setAttribute('aria-current', i === miniIndex ? 'true' : 'false');
+    });
+  }
+
+  function goMini(i) {
+    stopMini();
+    miniIndex = Math.max(0, Math.min(previews.length - 1, i));
+    const gap = parseFloat(getComputedStyle(miniTrack).getPropertyValue('--gap')) || 10;
+    const card = miniTrack.children[0];
+    const w = card ? card.getBoundingClientRect().width : 0;
+    const x = -(w + gap) * miniIndex;
+    miniTrack.style.transform = `translate3d(${x}px,0,0)`;
+    updateMiniDots();
+    startMini();
+  }
+
+  function nextMini() {
+    goMini((miniIndex + 1) % previews.length);
+  }
+  function prevMini() {
+    goMini((miniIndex - 1 + previews.length) % previews.length);
+  }
+
+  function startMini() {
+    stopMini();
+    miniTimer = setInterval(nextMini, MINI_AUTO_MS);
+  }
+  function stopMini() {
+    if (miniTimer) clearInterval(miniTimer);
+    miniTimer = null;
+  }
+
+  miniNext.addEventListener('click', nextMini);
+  miniPrev.addEventListener('click', prevMini);
+
+  // touch support
+  let tStart = 0, tDelta = 0;
+  const miniViewport = document.querySelector('.mini-viewport');
+  miniViewport.addEventListener('touchstart', (e) => { stopMini(); tStart = e.touches[0].clientX; tDelta = 0; }, { passive:true });
+  miniViewport.addEventListener('touchmove', (e) => { tDelta = e.touches[0].clientX - tStart; }, { passive:true });
+  miniViewport.addEventListener('touchend', () => {
+    const TH = 40;
+    if (tDelta > TH) prevMini();
+    else if (tDelta < -TH) nextMini();
+    startMini();
+  });
+
+  // init
+  updateMiniDots();
+  startMini();
+}
