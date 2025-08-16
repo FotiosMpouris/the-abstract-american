@@ -1,24 +1,51 @@
 /* ========= The Abstract American =========
    MAIN CAROUSEL (art##.png) + MINI CAROUSEL (artcycle##.png)
-   - Desktop: 3 visible, Tablet: 2, Mobile: 1 (main carousel)
-   - Mini carousel: 1-up, autoplay
+   - Desktop: 3 visible, Tablet: 2, Mobile: 1
+   - Lightbox image mode: arrows, swipe, Esc close, neon flair
 ==========================================*/
 
-// ---- Footer year ----
+// Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* =========================================================
-   MAIN CAROUSEL CONFIG (update these if your naming changes)
-========================================================= */
-const TOTAL_IMAGES = 25;            // number of gallery images
-const IMG_PREFIX = 'images/art';    // lowercase as per your update
+/* ---------- MAIN CAROUSEL CONFIG ---------- */
+const TOTAL_IMAGES = 25;                   // number of gallery images
+const IMG_PREFIX = 'images/art';           // lowercase as you set
 const IMG_EXT = '.png';
 const pad2 = n => String(n).padStart(2, '0');
+
+const DESCRIPTIONS = [
+  "Neon lattice drifting across midnight blues.",
+  "Copper circuitry weaving through turquoise haze.",
+  "Desert sunrise fractured into glassy planes.",
+  "Rain-slick city lights melting into strokes.",
+  "Thunderclouds sketched in chrome and ember.",
+  "Horizon lines bending like radio waves.",
+  "Rusted gears blooming into electric petals.",
+  "Night ocean mapped by pixel constellations.",
+  "Sunlit concrete softened by pastel echoes.",
+  "Jazz rhythm translated into color shards.",
+  "Steam whisked through violet neon corridors.",
+  "Memory fragments stitched with silver thread.",
+  "Heat shimmer dancing on aluminum dunes.",
+  "Skylines folding into origami reflections.",
+  "Old maps reimagined as magnetic fields.",
+  "Lantern glow spiraling through cobalt fog.",
+  "Wind patterns carved into carbon fiber.",
+  "Driftwood stories told in electric sienna.",
+  "Satellite orbits traced with brushgrain.",
+  "Alley graffiti dreaming in chrome daylight.",
+  "Sand, steel, and signal noise harmonized.",
+  "Tide charts painted with lunar graphite.",
+  "Radio towers dissolving into aurora streaks.",
+  "Rust, rain, and resonance finding balance.",
+  "Afterglow scattered across a quiet grid."
+];
 
 const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
   src: `${IMG_PREFIX}${pad2(i + 1)}${IMG_EXT}`,
   alt: `Artwork ${i + 1}`,
-  label: `ART ${pad2(i + 1)}`
+  label: `ART ${pad2(i + 1)}`,
+  desc: DESCRIPTIONS[i] || ""
 }));
 
 // DOM refs
@@ -35,12 +62,12 @@ let autoTimer = null;
 const AUTO_MS = 4200;
 const TRANS_MS = 520;
 
-// Build slides
+// Build slides with alternating caption sides on desktop
 function buildSlides() {
   track.innerHTML = '';
   images.forEach((img, i) => {
     const li = document.createElement('li');
-    li.className = 'slide';
+    li.className = 'slide ' + (i % 2 === 0 ? 'meta-left' : 'meta-right');
     li.setAttribute('role', 'group');
     li.setAttribute('aria-label', `${i + 1} of ${images.length}`);
 
@@ -53,11 +80,17 @@ function buildSlides() {
     badge.className = 'label';
     badge.textContent = img.label;
 
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.innerHTML = `<strong>${img.label}:</strong>&nbsp;${img.desc}`;
+
     li.appendChild(image);
     li.appendChild(badge);
+    li.appendChild(meta);
     track.appendChild(li);
 
-    li.addEventListener('click', () => window.open(img.src, '_blank'));
+    // Open lightbox on click
+    li.addEventListener('click', () => openLightbox(i));
   });
 }
 buildSlides();
@@ -90,6 +123,7 @@ function getSlidesPerView() {
   return 3;
 }
 
+// Navigation
 function prev() {
   stopAuto();
   const step = slidesPerView;
@@ -99,182 +133,4 @@ function prev() {
 }
 function next() {
   stopAuto();
-  const step = slidesPerView;
-  const maxStart = Math.max(0, images.length - slidesPerView);
-  currentIndex = Math.min(maxStart, currentIndex + step);
-  animateMove('next');
-  startAuto();
-}
-prevBtn.addEventListener('click', prev);
-nextBtn.addEventListener('click', next);
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') prev();
-  if (e.key === 'ArrowRight') next();
-});
-
-function animateMove() {
-  const slides = [...track.children];
-  slides.forEach(s => s.classList.remove('exit-left','enter-right','is-transporting'));
-  void track.offsetWidth;
-
-  const start = currentIndex;
-  const gap = parseFloat(getComputedStyle(track).getPropertyValue('--gap')) || 16;
-  const card = slides[0];
-  const cardWidth = card ? card.getBoundingClientRect().width : 0;
-  const offsetX = -(cardWidth + gap) * start;
-
-  track.style.transition = `transform ${TRANS_MS}ms cubic-bezier(.2,.65,.25,1)`;
-  track.style.transform = `translate3d(${offsetX}px,0,0)`;
-
-  setTimeout(() => {
-    slides.forEach(s => s.classList.remove('enter-right','exit-left','is-transporting'));
-    updateDots();
-  }, TRANS_MS);
-}
-
-function goToPage(pageIndex) {
-  stopAuto();
-  const step = slidesPerView;
-  currentIndex = Math.min(images.length - step, Math.max(0, pageIndex * step));
-  animateMove();
-  startAuto();
-}
-
-function startAuto(){
-  stopAuto();
-  autoTimer = setInterval(() => {
-    const step = slidesPerView;
-    const maxStart = Math.max(0, images.length - slidesPerView);
-    currentIndex = currentIndex >= maxStart ? 0 : currentIndex + step;
-    animateMove('next');
-  }, AUTO_MS);
-}
-function stopAuto(){
-  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-}
-startAuto();
-
-// Resize handling
-let resizeTO = null;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTO);
-  resizeTO = setTimeout(() => {
-    const oldSPV = slidesPerView;
-    slidesPerView = getSlidesPerView();
-    if (oldSPV !== slidesPerView) {
-      buildDots();
-      currentIndex = Math.floor(currentIndex / slidesPerView) * slidesPerView;
-    }
-    animateMove();
-  }, 120);
-});
-
-// Touch / swipe
-let touchStartX = 0, touchDeltaX = 0;
-viewport.addEventListener('touchstart', (e) => { stopAuto(); touchStartX = e.touches[0].clientX; touchDeltaX = 0; }, { passive:true });
-viewport.addEventListener('touchmove', (e) => { touchDeltaX = e.touches[0].clientX - touchStartX; }, { passive:true });
-viewport.addEventListener('touchend', () => {
-  const THRESH = 50;
-  if (touchDeltaX > THRESH) prev();
-  else if (touchDeltaX < -THRESH) next();
-  startAuto();
-});
-requestAnimationFrame(() => animateMove());
-
-/* =========================================================
-   MINI CAROUSEL: ColorFotiFoti preview
-   - files: images/artcycle01.png ... images/artcycle05.png
-   - to add more: just change TOTAL_CYCLE_IMAGES
-========================================================= */
-const TOTAL_CYCLE_IMAGES = 5;               // <— bump this if you add more
-const CYCLE_PREFIX = 'images/artcycle';
-const CYCLE_EXT = '.png';
-
-const miniTrack = document.getElementById('miniTrack');
-const miniDots = document.getElementById('miniDots');
-const miniPrev = document.querySelector('.mini-prev');
-const miniNext = document.querySelector('.mini-next');
-
-if (miniTrack && miniDots && miniPrev && miniNext) {
-  const previews = Array.from({ length: TOTAL_CYCLE_IMAGES }, (_, i) => ({
-    src: `${CYCLE_PREFIX}${pad2(i + 1)}${CYCLE_EXT}`,
-    alt: `ColorFotiFoti preview ${i + 1}`
-  }));
-
-  // Build slides
-  previews.forEach((p, i) => {
-    const li = document.createElement('li');
-    li.className = 'mini-slide';
-    const img = document.createElement('img');
-    img.src = p.src;
-    img.alt = p.alt;
-    li.appendChild(img);
-    miniTrack.appendChild(li);
-  });
-
-  // Build dots
-  previews.forEach((_, i) => {
-    const b = document.createElement('button');
-    b.setAttribute('aria-label', `Go to preview ${i + 1}`);
-    b.addEventListener('click', () => goMini(i));
-    miniDots.appendChild(b);
-  });
-
-  let miniIndex = 0;
-  const MINI_AUTO_MS = 3800;
-  let miniTimer = null;
-
-  function updateMiniDots() {
-    [...miniDots.children].forEach((d, i) => {
-      d.setAttribute('aria-current', i === miniIndex ? 'true' : 'false');
-    });
-  }
-
-  function goMini(i) {
-    stopMini();
-    miniIndex = Math.max(0, Math.min(previews.length - 1, i));
-    const gap = parseFloat(getComputedStyle(miniTrack).getPropertyValue('--gap')) || 10;
-    const card = miniTrack.children[0];
-    const w = card ? card.getBoundingClientRect().width : 0;
-    const x = -(w + gap) * miniIndex;
-    miniTrack.style.transform = `translate3d(${x}px,0,0)`;
-    updateMiniDots();
-    startMini();
-  }
-
-  function nextMini() {
-    goMini((miniIndex + 1) % previews.length);
-  }
-  function prevMini() {
-    goMini((miniIndex - 1 + previews.length) % previews.length);
-  }
-
-  function startMini() {
-    stopMini();
-    miniTimer = setInterval(nextMini, MINI_AUTO_MS);
-  }
-  function stopMini() {
-    if (miniTimer) clearInterval(miniTimer);
-    miniTimer = null;
-  }
-
-  miniNext.addEventListener('click', nextMini);
-  miniPrev.addEventListener('click', prevMini);
-
-  // touch support
-  let tStart = 0, tDelta = 0;
-  const miniViewport = document.querySelector('.mini-viewport');
-  miniViewport.addEventListener('touchstart', (e) => { stopMini(); tStart = e.touches[0].clientX; tDelta = 0; }, { passive:true });
-  miniViewport.addEventListener('touchmove', (e) => { tDelta = e.touches[0].clientX - tStart; }, { passive:true });
-  miniViewport.addEventListener('touchend', () => {
-    const TH = 40;
-    if (tDelta > TH) prevMini();
-    else if (tDelta < -TH) nextMini();
-    startMini();
-  });
-
-  // init
-  updateMiniDots();
-  startMini();
-}
+  const step = sli
