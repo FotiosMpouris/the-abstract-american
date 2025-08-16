@@ -9,7 +9,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 // 2) Build image list automatically (ART01..ART25.png)
 const TOTAL_IMAGES = 25;
-const IMG_PREFIX = 'images/ART';
+const IMG_PREFIX = 'images/art';
 const IMG_EXT = '.png';
 
 // Pads to two digits (01..25)
