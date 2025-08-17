@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Abstract American</title>
-  <meta name="description" content="A sci-fi/steampunk tinged gallery from planet Earth." />
+  <meta name="description" content="A gallery from planet Earth: bold color, fractured shapes, a little sci-fi, a lot of human." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 <body>
 
   <!-- HERO -->
-  <header class="hero" id="home" aria-label="Site header with flag background">
+  <header class="hero" id="home" aria-label="Site header with translucent background">
     <div class="hero__backdrop" aria-hidden="true"></div>
     <div class="hero__veil" aria-hidden="true"></div>
     <div class="hero__inner">
@@ -28,7 +28,7 @@
   <main id="gallery" class="gallery-section" aria-label="Artwork gallery">
     <div class="section-title">
       <h2>Gallery</h2>
-      <p>Click any image to enter image mode and navigate.</p>
+      <p>Tap an image for full view, stories, and swipe/arrow navigation.</p>
     </div>
 
     <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Artwork carousel">
@@ -47,14 +47,19 @@
     <div class="section-title"><h2>About</h2></div>
     <div class="about__content metal-card">
       <p>
-        Hi — I’m a human from planet Earth making images that mix the familiar with the slightly impossible.
-        Think city light, rust, coastline, circuitry — sometimes sci-fi, sometimes not — always guided by
-        color, texture, and play. The “Abstract American” tag is a lens, not a rulebook.
+        Hello from planet Earth. I paint with color first and logic second —
+        mixing the familiar with the almost-impossible. Some of it feels sci-fi,
+        some of it smells like salt air and street noise. All of it chases a feeling:
+        that small click when a memory meets a new idea.
       </p>
       <p>
-        This site aims to feel alive: subtle neon edges, metallic whispers, a touch of hologram.
-        The goal isn’t selling; it’s starting conversations. If a piece nudges a memory or a question,
-        that’s the win. Thanks for spending a moment here.
+        If a piece makes you laugh, stare, or argue with your friend for a minute,
+        we’re doing this right. I’m open to commissions when we share an appetite
+        for expressive work and a healthy risk tolerance.
+      </p>
+      <p>
+        More of my non-gallery projects live at
+        <a class="link" href="https://fotiosmpouris.com" target="_blank" rel="noopener">fotiosmpouris.com</a>.
       </p>
     </div>
   </section>
@@ -86,8 +91,8 @@
         <a class="cta promo-link" href="https://colorfotifoti.com" target="_blank" rel="noopener">Visit ColorFotiFoti</a>
       </div>
 
-      <!-- Contact form -->
-      <form class="metal-card contact-form" action="https://formspree.io/f/xovlzvgd" method="POST">
+      <!-- Contact form (keep your Formspree endpoint) -->
+      <form class="metal-card contact-form" action="https://formspree.io/f/your-id" method="POST">
         <h3>Quick note</h3>
         <label>
           Name
@@ -130,6 +135,7 @@
       </figcaption>
       <div class="lb-flare" aria-hidden="true"></div>
     </figure>
+    <!-- Right arrow intentionally kept for desktop, hidden on mobile via CSS -->
     <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">&#10095;</button>
   </div>
 
