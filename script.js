@@ -73,6 +73,8 @@ const STORIES = [
   "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
   // 18 Fury Mask
   "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder."
+  // 18 Fury Mask
+  "The future is a technological breakthrough into the nature of the realistically possible."
 ];
 
 /* ===== Build normalized image objects ===== */
