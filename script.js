@@ -13,8 +13,8 @@ document.getElementById('year').textContent = new Date().getFullYear();
    Title = short gallery label; Teaser = 2–3 words shown in gallery;
    Story = longer, fun write-up shown in the lightbox. */
 const FILES = [
-  { src:'images/art01.png', title:'Howl', teaser:'fractured beast' },
-  { src:'images/art02.png', title:'Twin Suns', teaser:'split-face harmony' },
+  { src:'images/art01.png', title:'The Independent Fox', teaser:'research independently' },
+  { src:'images/art02.png', title:'Queen of Stars', teaser:'angles in motion' },
   { src:'images/art03.png', title:'Sail of Fire', teaser:'sunlit wake' },
   { src:'images/art04.png', title:'Iron Horse', teaser:'angles in motion' },
   { src:'images/art05.png', title:'Radiant Muse', teaser:'galaxy curls' },
