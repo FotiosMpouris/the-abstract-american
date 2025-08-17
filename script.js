@@ -13,15 +13,15 @@ document.getElementById('year').textContent = new Date().getFullYear();
    Title = short gallery label; Teaser = 2–3 words shown in gallery;
    Story = longer, fun write-up shown in the lightbox. */
 const FILES = [
-  { src:'images/art01.png', title:'Fox, Incorporated', teaser:'sharp suit' },
+  { src:'images/art01.png', title:'The Independent Fox', teaser:'research independently' },
   { src:'images/art02.png', title:'Queen of Stars', teaser:'angles in motion' },
   { src:'images/art03.png', title:'Street Fox', teaser:'urban trickster' },
-  { src:'images/art04.png', title:'Twin Suns', teaser:'split-face harmony' },
+  { src:'images/art04.png', title:'Constellation Curl', teaser:'orbits of hair' },
   { src:'images/art05.png', title:'Radiant Muse', teaser:'galaxy curls' },
   { src:'images/art06.png', title:'Beacon', teaser:'light through weather' },
   { src:'images/art07.png', title:'Equinox Horse', teaser:'prism mare' },
-  { src:'images/art08.png', title:'Howl', teaser:'fractured beast' },
-  { src:'images/art09.png', title:'Iron Horse', teaser:'poise + cosmos' },  
+  { src:'images/art08.png', title:'Fury Mask', teaser:'geometry, loud' },
+  { src:'images/art09.png', title:'Trojan', teaser:'poise + cosmos' },  
   { src:'images/art10.png', title:'Shark City', teaser:'mechanical grin' },
   { src:'images/art11.png', title:'Barrel Run', teaser:'moment of speed' },
   { src:'images/art12.png', title:'Spiral Madonna', teaser:'eyes like spirals' },
@@ -29,30 +29,31 @@ const FILES = [
   { src:'images/art14.png', title:'Circuit Gaze', teaser:'signals and eyes' },
   { src:'images/art15.png', title:'Sail at Dusk', teaser:'harbor gold' },
   { src:'images/art16.png', title:'Island Light', teaser:'home by the water' },   
-  { src:'images/art17.png', title:'Constellation Curl', teaser:'orbits of hair' },
-  { src:'images/art18.png', title:'Fury Mask', teaser:'geometry, loud' }          
+  { src:'images/art17.png', title:'Maria Keeterna', teaser:'split-face harmony' },
+  { src:'images/art18.png', title:'Howl', teaser:'fractured beast' },
+  { src:'images/art19.png', title:'Mycelias Network', teaser:'wisdom, discrepancy' }
 ];
 
 /* Stories in a voice that’s part Tom Wolfe, part Natalie Goldberg, with a cosmic
    wink from Jerry Garcia. Keep them punchy and alive. */
 const STORIES = [
-  // 1 Fox, Incorporated
-  "A CEO from the mythic forest. Tie knotted like a plot twist, ears tuned to quarterly whispers. He signs in pawprint cursive and the boardroom howls approval.",   
+  // 1 The Independent Fox
+  "Standing alone not knowing that there are billions.",   
   // 2 Queen of Stars
-  "Crowns are for heads; constellations are for hair. She carries both. Flags in the back salute, not out of duty but because elegance just walked in.",   
+  "Crowns are for heads; she is the dream. She carries both. There is not a single day; we do not ever forget.",   
   // 3 Street Fox
   "Urban folklore in orange and cobalt. He smells like spray paint and good trouble, the kind of friend who returns your lighter with a better story attached.",   
-  // 4 Twin Suns
-  "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
+  // 4 Constellation Curl
+  "Hair as a night map—each curl a galaxy kiosk saying You Are Here. She’s not posing; she’s orbiting slowly, taking attendance of the planets.",   
   // 5 Beacon
   "The lighthouse minds its own holiness while the weather auditions for disaster films. Paint, patience, gulls debating maritime policy—somehow the light keeps winning.",   
   // 6 Radiant Muse
   "She carries a galaxy in her hair like it’s a casual Tuesday. Her look says: I’ve read your aura and it checks out—now do something brave. The circles orbit because gravity is a fan.",
   // 7 Equinox Horse
   "Dawn on one flank, midnight on the other. The horse steps out of a star chart and onto asphalt, and the street has the good sense to hush.",  
-  // 8 Howl
-  "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder.",
-  // 9 Iron Horse
+  // 8 Fury Mask
+  "A roar engineered from geometry and gossip. Fear shows up, laughs, and stays for the party. Even monsters deserve flattering lighting."
+  // 9 Trojan
   "A horse built from rulers and fever dreams. Chrome bones, sunset mane, hooves that punch exclamation points into the dark. You can hear the snort: smoke, cinnamon, electricity.",   
   // 10 Shark City
   "Everything with a deadline grew teeth. Elevators, invoices, that guy from accounting. The shark grins like a billboard for capitalism and swims off with your to-do list between its molars.",   
@@ -68,10 +69,12 @@ const STORIES = [
   "The harbor liquefies into stained glass. Boats hover like prayer beads pulled slow through the hour. The sun signs its autograph and leaves town.",
   // 16 Island Light
   "Stairs to the sea, lemons in the air, a boat napping in cobalt. The moon RSVP’d yes and brought dessert.",
-  // 17 Constellation Curl
-  "Hair as a night map—each curl a galaxy kiosk saying You Are Here. She’s not posing; she’s orbiting slowly, taking attendance of the planets.",
-  // 18 Fury Mask
-  "A roar engineered from geometry and gossip. Fear shows up, laughs, and stays for the party. Even monsters deserve flattering lighting."
+  // 17 Maria Keeterna
+  "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
+  // 18 Howl
+  "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder.",   
+  // 19 Mycelia's Network
+  "The future is a technological breakthrough into the nature of the realistically possible"
 ];
 
 /* ===== Build normalized image objects ===== */
