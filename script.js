@@ -1,68 +1,102 @@
 /* ========= The Abstract American =========
-   MAIN CAROUSEL (art##.png) + MINI CAROUSEL (artcycle##.png)
-   - Desktop: 3 visible, Tablet: 2, Mobile: 1
-   - Lightbox image mode: arrows, swipe, Esc close, neon flair
-==========================================*/
+   - Main carousel: 3-up desktop, 2-up tablet, 1-up mobile
+   - Gallery captions short; lightbox stories longer
+   - Lightbox: arrows on desktop, SWIPE on mobile (+right arrow hidden via CSS)
+   - Mini promo carousel kept intact
+===================================================== */
 
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* ---------- MAIN CAROUSEL CONFIG ---------- */
-const TOTAL_IMAGES = 25;                   // number of gallery images
-const IMG_PREFIX = 'images/art';           // lowercase as you set
-const IMG_EXT = '.png';
+/* ================== MAIN GALLERY DATA ================== */
+/* Images should exist as: images/art01.png ... images/art18.png (lowercase) */
+const TOTAL_IMAGES = 18;
 const pad2 = n => String(n).padStart(2, '0');
+const SRC = i => `images/art${pad2(i)}.png`; // keeps your existing structure
 
-const DESCRIPTIONS = [
-  "Neon lattice drifting across midnight blues.",
-  "Copper circuitry weaving through turquoise haze.",
-  "Desert sunrise fractured into glassy planes.",
-  "Rain-slick city lights melting into strokes.",
-  "Thunderclouds sketched in chrome and ember.",
-  "Horizon lines bending like radio waves.",
-  "Rusted gears blooming into electric petals.",
-  "Night ocean mapped by pixel constellations.",
-  "Sunlit concrete softened by pastel echoes.",
-  "Jazz rhythm translated into color shards.",
-  "Steam whisked through violet neon corridors.",
-  "Memory fragments stitched with silver thread.",
-  "Heat shimmer dancing on aluminum dunes.",
-  "Skylines folding into origami reflections.",
-  "Old maps reimagined as magnetic fields.",
-  "Lantern glow spiraling through cobalt fog.",
-  "Wind patterns carved into carbon fiber.",
-  "Driftwood stories told in electric sienna.",
-  "Satellite orbits traced with brushgrain.",
-  "Alley graffiti dreaming in chrome daylight.",
-  "Sand, steel, and signal noise harmonized.",
-  "Tide charts painted with lunar graphite.",
-  "Radio towers dissolving into aurora streaks.",
-  "Rust, rain, and resonance finding balance.",
-  "Afterglow scattered across a quiet grid."
+/* Short front-facing captions (2–4 words).
+   Longer stories appear in the lightbox. Edit freely. */
+const TITLES = [
+  "Howl","Twin Suns","Sail of Fire","Iron Horse","Radiant Muse","Beacon",
+  "Shark City","Barrel Run","Queen of Stars","Circuit Gaze","Fox, Incorporated",
+  "Street Fox","Constellation Curl","Equinox Horse","Spiral Madonna",
+  "Sail at Dusk","Island Light","Fury Mask"
 ];
 
-const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => ({
-  src: `${IMG_PREFIX}${pad2(i + 1)}${IMG_EXT}`,
-  alt: `Artwork ${i + 1}`,
-  label: `ART ${pad2(i + 1)}`,
-  desc: DESCRIPTIONS[i] || ""
-}));
+const TEASERS = [
+  "fractured beast","split-face harmony","sunlit wake","angles in motion",
+  "galaxy curls","light through weather","mechanical grin","moment of speed",
+  "poise + cosmos","signals and eyes","sharp suit, sly grin","urban trickster",
+  "orbits of hair","prism mare","eyes like spirals","harbor gold",
+  "home by the water","geometry, loud"
+];
 
-// DOM refs
+const STORIES = [
+  // 01 Howl
+  "Some dreams purr. This one howls. A creature made of rivets and rhythm opens its mouth to modern noise. It’s part warning siren, part laugh track, and fully alive.",
+  // 02 Twin Suns
+  "Two sides of the same human: solar and lunar, careful and chaotic. A face spliced by circuitry that still finds room to breathe. The eyes know more than they’re saying.",
+  // 03 Sail of Fire
+  "A boat cutting across a mirror of melted daylight. The sail catches a stray comet, and the sea politely pretends this is normal behavior.",
+  // 04 Iron Horse
+  "A stallion assembled from geometry, posture, and memory. You can almost hear the snort — chrome, cinnamon, and electricity.",
+  // 05 Radiant Muse
+  "Hair like an orbiting festival. She’s calm in the middle of a color storm, the look of someone who can read your future but won’t ruin the surprise.",
+  // 06 Beacon
+  "Weather churns; lighthouse shrugs. A steady hum of paint and patience holds the line while gulls talk politics overhead.",
+  // 07 Shark City
+  "A metropolis builds a fish and gives it teeth. It eats deadlines, parking tickets, and half-finished coffee. The smile is strictly business.",
+  // 08 Barrel Run
+  "Speed turns corners into diagonals. Sand leaps; the horse answers; the rider grins into the dust. Momentum is the medium.",
+  // 09 Queen of Stars
+  "A crown of constellations, a backdrop of flags. Country meets cosmos and neither blinks first.",
+  // 10 Circuit Gaze
+  "Signals orbit her like moons, but the eyes are analog: warm, stubborn, and a little amused by gravity.",
+  // 11 Fox, Incorporated
+  "Dress sharp, scheme sharper. This fox knows boardrooms are just forests with carpets. Stars in the background… for optics.",
+  // 12 Street Fox
+  "Rust, paint, and neon whiskers. A city-sized slyness. If he borrowed your lighter, he’d bring it back with a new story.",
+  // 13 Constellation Curl
+  "The night sky tries a new hairstyle. Spirals, orbits, and a thousand tiny decisions that somehow add up to a face.",
+  // 14 Equinox Horse
+  "Built from twilight angles, this horse steps out of a constellation and onto the road. Hooves? More like exclamation points.",
+  // 15 Spiral Madonna
+  "Saint of good trouble. A halo of spirals, a quiet joke in the eyes, and a promise not to play it safe.",
+  // 16 Sail at Dusk
+  "Harbor glass turns to liquid fire; boats float on top of their own reflections. Time finally sits down and watches the sun.",
+  // 17 Island Light
+  "A staircase to the sea, a boat napping in cobalt. The house says ‘stay for dinner’; the moon RSVP’d yes.",
+  // 18 Fury Mask
+  "A roar turned into architecture. Fear, humor, and a dash of carnival — because even monsters deserve good lighting."
+];
+
+// Build image objects
+const images = Array.from({ length: TOTAL_IMAGES }, (_, i) => {
+  const idx = i + 1;
+  return {
+    src: SRC(idx),
+    alt: `Artwork ${idx}`,
+    label: `ART ${pad2(idx)}`,
+    title: TITLES[i] || `ART ${pad2(idx)}`,
+    teaser: TEASERS[i] || "",
+    story: STORIES[i] || ""
+  };
+});
+
+/* ================== MAIN CAROUSEL UI ================== */
 const track = document.getElementById('carouselTrack');
 const dotsWrap = document.getElementById('carouselDots');
 const prevBtn = document.querySelector('.nav.prev');
 const nextBtn = document.querySelector('.nav.next');
 const viewport = document.querySelector('.track-viewport');
 
-// State
 let currentIndex = 0;
 let slidesPerView = getSlidesPerView();
 let autoTimer = null;
 const AUTO_MS = 4200;
 const TRANS_MS = 520;
 
-// Build slides with alternating caption sides on desktop
+// Build slides (alternating caption side on desktop)
 function buildSlides() {
   track.innerHTML = '';
   images.forEach((img, i) => {
@@ -80,16 +114,17 @@ function buildSlides() {
     badge.className = 'label';
     badge.textContent = img.label;
 
+    // short gallery caption
     const meta = document.createElement('div');
     meta.className = 'meta';
-    meta.innerHTML = `<strong>${img.label}:</strong>&nbsp;${img.desc}`;
+    const shortText = img.teaser ? ` — ${img.teaser}` : '';
+    meta.innerHTML = `<strong>${img.title}</strong>${shortText}`;
 
     li.appendChild(image);
     li.appendChild(badge);
     li.appendChild(meta);
     track.appendChild(li);
 
-    // Open lightbox on click
     li.addEventListener('click', () => openLightbox(i));
   });
 }
@@ -111,9 +146,7 @@ buildDots();
 
 function updateDots() {
   const page = Math.floor(currentIndex / slidesPerView);
-  [...dotsWrap.children].forEach((d, i) => {
-    d.setAttribute('aria-current', i === page ? 'true' : 'false');
-  });
+  [...dotsWrap.children].forEach((d, i) => d.setAttribute('aria-current', i === page ? 'true' : 'false'));
 }
 
 function getSlidesPerView() {
@@ -123,12 +156,11 @@ function getSlidesPerView() {
   return 3;
 }
 
-// Navigation
 function prev() {
   stopAuto();
   const step = slidesPerView;
   currentIndex = Math.max(0, currentIndex - step);
-  animateMove('prev');
+  animateMove();
   startAuto();
 }
 function next() {
@@ -136,14 +168,15 @@ function next() {
   const step = slidesPerView;
   const maxStart = Math.max(0, images.length - slidesPerView);
   currentIndex = Math.min(maxStart, currentIndex + step);
-  animateMove('next');
+  animateMove();
   startAuto();
 }
 prevBtn.addEventListener('click', prev);
 nextBtn.addEventListener('click', next);
 
+// Keyboard (only when lightbox is closed to avoid double handling)
 document.addEventListener('keydown', (e) => {
-  if (isLightboxOpen()) return; // avoid conflicting with lightbox
+  if (isLightboxOpen()) return;
   if (e.key === 'ArrowLeft') prev();
   if (e.key === 'ArrowRight') next();
 });
@@ -162,10 +195,7 @@ function animateMove() {
   track.style.transition = `transform ${TRANS_MS}ms cubic-bezier(.2,.65,.25,1)`;
   track.style.transform = `translate3d(${offsetX}px,0,0)`;
 
-  setTimeout(() => {
-    slides.forEach(s => s.classList.remove('enter-right','exit-left','is-transporting'));
-    updateDots();
-  }, TRANS_MS);
+  setTimeout(updateDots, TRANS_MS);
 }
 
 function goToPage(pageIndex) {
@@ -182,7 +212,7 @@ function startAuto(){
     const step = slidesPerView;
     const maxStart = Math.max(0, images.length - slidesPerView);
     currentIndex = currentIndex >= maxStart ? 0 : currentIndex + step;
-    animateMove('next');
+    animateMove();
   }, AUTO_MS);
 }
 function stopAuto(){
@@ -190,7 +220,7 @@ function stopAuto(){
 }
 startAuto();
 
-// Resize handling
+// Responsive
 let resizeTO = null;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTO);
@@ -211,13 +241,12 @@ viewport.addEventListener('touchstart', (e) => { stopAuto(); touchStartX = e.tou
 viewport.addEventListener('touchmove', (e) => { touchDeltaX = e.touches[0].clientX - touchStartX; }, { passive:true });
 viewport.addEventListener('touchend', () => {
   const THRESH = 50;
-  if (touchDeltaX > THRESH) prev();
-  else if (touchDeltaX < -THRESH) next();
+  if (touchDeltaX > THRESH) prev(); else if (touchDeltaX < -THRESH) next();
   startAuto();
 });
-requestAnimationFrame(() => animateMove());
+requestAnimationFrame(animateMove);
 
-/* ---------- LIGHTBOX (Image Mode) ---------- */
+/* ================== LIGHTBOX (Image Mode) ================== */
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImage');
 const lbTitle = document.getElementById('lbTitle');
@@ -257,8 +286,8 @@ function updateLightbox(){
   const item = images[lbIndex];
   lbImg.src = item.src;
   lbImg.alt = item.alt;
-  lbTitle.textContent = item.label;
-  lbDesc.textContent = item.desc || '';
+  lbTitle.textContent = item.title;
+  lbDesc.textContent = item.story || '';
   lbCount.textContent = `${lbIndex + 1} / ${images.length}`;
 }
 
@@ -275,28 +304,23 @@ lbClose.addEventListener('click', closeLightbox);
 lbPrev.addEventListener('click', prevLightbox);
 lbNext.addEventListener('click', nextLightbox);
 
-// click outside image closes
+// Close when clicking backdrop (not buttons/frame)
 lb.addEventListener('click', (e) => {
-  // only close if you click the backdrop, not buttons/frame
-  const clickInside = e.target.closest('.lb-frame') || e.target.closest('.lb-nav') || e.target.closest('.lb-close');
-  if (!clickInside) closeLightbox();
+  const inside = e.target.closest('.lb-frame') || e.target.closest('.lb-nav') || e.target.closest('.lb-close');
+  if (!inside) closeLightbox();
 });
 
-// swipe on lightbox
+// Swipe on lightbox
 let lbTouchStart = 0, lbTouchDelta = 0;
 lbFrame.addEventListener('touchstart', (e) => { lbTouchStart = e.touches[0].clientX; lbTouchDelta = 0; }, { passive:true });
 lbFrame.addEventListener('touchmove', (e) => { lbTouchDelta = e.touches[0].clientX - lbTouchStart; }, { passive:true });
 lbFrame.addEventListener('touchend', () => {
   const TH = 40;
-  if (lbTouchDelta > TH) prevLightbox();
-  else if (lbTouchDelta < -TH) nextLightbox();
+  if (lbTouchDelta > TH) prevLightbox(); else if (lbTouchDelta < -TH) nextLightbox();
 });
 
-/* ---------- MINI CAROUSEL: ColorFotiFoti preview ---------- */
+/* ================== MINI PROMO CAROUSEL ================== */
 const TOTAL_CYCLE_IMAGES = 5;               // bump if you add more
-const CYCLE_PREFIX = 'images/artcycle';
-const CYCLE_EXT = '.png';
-
 const miniTrack = document.getElementById('miniTrack');
 const miniDots = document.getElementById('miniDots');
 const miniPrev = document.querySelector('.mini-prev');
@@ -304,7 +328,7 @@ const miniNext = document.querySelector('.mini-next');
 
 if (miniTrack && miniDots && miniPrev && miniNext) {
   const previews = Array.from({ length: TOTAL_CYCLE_IMAGES }, (_, i) => ({
-    src: `${CYCLE_PREFIX}${pad2(i + 1)}${CYCLE_EXT}`,
+    src: `images/artcycle${pad2(i + 1)}.png`,
     alt: `ColorFotiFoti preview ${i + 1}`
   }));
 
@@ -329,9 +353,7 @@ if (miniTrack && miniDots && miniPrev && miniNext) {
   let miniTimer = null;
 
   function updateMiniDots() {
-    [...miniDots.children].forEach((d, i) => {
-      d.setAttribute('aria-current', i === miniIndex ? 'true' : 'false');
-    });
+    [...miniDots.children].forEach((d, i) => d.setAttribute('aria-current', i === miniIndex ? 'true' : 'false'));
   }
 
   function goMini(i) {
@@ -367,7 +389,6 @@ if (miniTrack && miniDots && miniPrev && miniNext) {
     startMini();
   });
 
-  // init
   updateMiniDots();
   startMini();
 }
