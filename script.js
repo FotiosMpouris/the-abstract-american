@@ -210,94 +210,46 @@ lbFrame.addEventListener('touchstart', (e)=>{ lbStart=e.touches[0].clientX; lbDX
 lbFrame.addEventListener('touchmove', (e)=>{ lbDX=e.touches[0].clientX - lbStart; }, {passive:true});
 lbFrame.addEventListener('touchend', ()=>{ const TH=40; if(lbDX>TH) prevLightbox(); else if(lbDX<-TH) nextLightbox(); });
 
-/* ================== MINI PROMO CAROUSEL (robust) ================== */
+/* ================== MINI PROMO CAROUSEL (unchanged) ================== */
+const TOTAL_CYCLE_IMAGES = 5;
 const miniTrack = document.getElementById('miniTrack');
-const miniDots  = document.getElementById('miniDots');
-const miniPrev  = document.querySelector('.mini-prev');
-const miniNext  = document.querySelector('.mini-next');
-
-/* Edit this list to match *exact* filenames (case-sensitive on GitHub Pages). */
-const MINI_FILES = [
-  'colorfoti.png',        // hero / fallback
-  'artcycle01.png',
-  'artcycle02.png',
-  'artcycle03.png',
-  'artcycle04.png',
-  'artcycle05.png'
-];
+const miniDots = document.getElementById('miniDots');
+const miniPrev = document.querySelector('.mini-prev');
+const miniNext = document.querySelector('.mini-next');
 
 if (miniTrack && miniDots && miniPrev && miniNext) {
-  // Preload + filter out 404s so Safari doesn't render "nothing"
-  const preload = (name) => new Promise(resolve => {
-    const img = new Image();
-    img.onload  = () => resolve({ ok: true, src: `images/${name}` });
-    img.onerror = () => resolve({ ok: false });
-    img.src = `images/${name}`;
+  const pad2 = n => String(n).padStart(2,'0');
+  const previews = Array.from({ length: TOTAL_CYCLE_IMAGES }, (_, i) => ({
+    src: `images/artcycle${pad2(i+1)}.png`, alt: `ColorFotiFoti preview ${i+1}`
+  }));
+
+  previews.forEach(p => {
+    const li=document.createElement('li'); li.className='mini-slide';
+    const img=document.createElement('img'); img.src=p.src; img.alt=p.alt;
+    li.appendChild(img); miniTrack.appendChild(li);
   });
 
-  Promise.all(MINI_FILES.map(preload)).then(results => {
-    // Ensure we have at least one valid slide (fallback to colorfoti.png)
-    let valid = results.filter(r => r.ok);
-    if (valid.length === 0) valid = [{ ok:true, src: 'images/colorfoti.png' }];
+  previews.forEach((_,i)=>{ const b=document.createElement('button'); b.setAttribute('aria-label',`Go to preview ${i+1}`); b.addEventListener('click',()=>goMini(i)); miniDots.appendChild(b); });
 
-    // Build slides
-    valid.forEach((r, i) => {
-      const li = document.createElement('li');
-      li.className = 'mini-slide';
-      const img = document.createElement('img');
-      img.src = r.src; img.alt = `ColorFotiFoti preview ${i+1}`;
-      li.appendChild(img);
-      miniTrack.appendChild(li);
-    });
+  let miniIndex=0, miniTimer=null; const MINI_AUTO_MS=3800;
+  const updateMiniDots=()=>{ [...miniDots.children].forEach((d,i)=>d.setAttribute('aria-current', i===miniIndex ? 'true':'false')); };
+  const stopMini=()=>{ if(miniTimer){ clearInterval(miniTimer); miniTimer=null; } };
+  const startMini=()=>{ stopMini(); miniTimer=setInterval(()=>goMini((miniIndex+1)%previews.length), MINI_AUTO_MS); };
 
-    // Build dots only if more than one slide
-    if (valid.length > 1) {
-      for (let i = 0; i < valid.length; i++) {
-        const b = document.createElement('button');
-        b.setAttribute('aria-label', `Go to preview ${i+1}`);
-        b.addEventListener('click', () => goMini(i));
-        miniDots.appendChild(b);
-      }
-    } else {
-      miniDots.style.display = 'none';
-      miniPrev.style.display = 'none';
-      miniNext.style.display = 'none';
-    }
+  function goMini(i){
+    stopMini(); miniIndex=Math.max(0, Math.min(previews.length-1, i));
+    const gap=parseFloat(getComputedStyle(miniTrack).getPropertyValue('--gap'))||10;
+    const card=miniTrack.children[0]; const w=card?card.getBoundingClientRect().width:0;
+    miniTrack.style.transform=`translate3d(${-(w+gap)*miniIndex}px,0,0)`; updateMiniDots(); startMini();
+  }
 
-    let miniIndex = 0, miniTimer = null;
-    const MINI_AUTO_MS = 3800;
+  miniNext.addEventListener('click', ()=>goMini((miniIndex+1)%previews.length));
+  miniPrev.addEventListener('click', ()=>goMini((miniIndex-1+previews.length)%previews.length));
 
-    function updateMiniDots() {
-      [...miniDots.children].forEach((d, i) => d.setAttribute('aria-current', i === miniIndex ? 'true' : 'false'));
-    }
-    function goMini(i) {
-      stopMini();
-      miniIndex = Math.max(0, Math.min(valid.length - 1, i));
-      const gap = parseFloat(getComputedStyle(miniTrack).getPropertyValue('--gap')) || 10;
-      const card = miniTrack.children[0];
-      const w = card ? card.getBoundingClientRect().width : 0;
-      const x = -(w + gap) * miniIndex;
-      miniTrack.style.transform = `translate3d(${x}px,0,0)`;
-      updateMiniDots();
-      startMini();
-    }
-    function nextMini(){ goMini((miniIndex + 1) % valid.length); }
-    function prevMini(){ goMini((miniIndex - 1 + valid.length) % valid.length); }
-    function startMini(){ stopMini(); if (valid.length > 1) miniTimer = setInterval(nextMini, MINI_AUTO_MS); }
-    function stopMini(){ if (miniTimer) { clearInterval(miniTimer); miniTimer = null; } }
+  let tStart=0, tDX=0; const miniViewport=document.querySelector('.mini-viewport');
+  miniViewport.addEventListener('touchstart', e=>{ stopMini(); tStart=e.touches[0].clientX; tDX=0; }, {passive:true});
+  miniViewport.addEventListener('touchmove', e=>{ tDX=e.touches[0].clientX - tStart; }, {passive:true});
+  miniViewport.addEventListener('touchend', ()=>{ const TH=40; if(tDX>TH) goMini((miniIndex-1+previews.length)%previews.length); else if(tDX<-TH) goMini((miniIndex+1)%previews.length); startMini(); });
 
-    miniNext.addEventListener('click', nextMini);
-    miniPrev.addEventListener('click', prevMini);
-
-    // Touch swipe
-    let tStart = 0, tDX = 0;
-    const miniViewport = document.querySelector('.mini-viewport');
-    miniViewport.addEventListener('touchstart', e => { stopMini(); tStart = e.touches[0].clientX; tDX = 0; }, { passive:true });
-    miniViewport.addEventListener('touchmove',  e => { tDX = e.touches[0].clientX - tStart; }, { passive:true });
-    miniViewport.addEventListener('touchend',   () => { const TH = 40; if (tDX > TH) prevMini(); else if (tDX < -TH) nextMini(); startMini(); });
-
-    // Initialize
-    updateMiniDots();
-    startMini();
-  });
+  updateMiniDots(); startMini();
 }
