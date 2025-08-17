@@ -21,16 +21,16 @@ const FILES = [
   { src:'images/art06.png', title:'Beacon', teaser:'light through weather' },
   { src:'images/art07.png', title:'Shark City', teaser:'mechanical grin' },
   { src:'images/art08.png', title:'Barrel Run', teaser:'moment of speed' },
-  { src:'images/art09.jpg', title:'Queen of Stars', teaser:'poise + cosmos' },  // jpg example
+  { src:'images/art09.png', title:'Queen of Stars', teaser:'poise + cosmos' },  // jpg example
   { src:'images/art10.png', title:'Circuit Gaze', teaser:'signals and eyes' },
   { src:'images/art11.png', title:'Fox, Incorporated', teaser:'sharp suit' },
   { src:'images/art12.png', title:'Street Fox', teaser:'urban trickster' },
-  { src:'images/art13.jpg', title:'Constellation Curl', teaser:'orbits of hair' }, // jpg example
+  { src:'images/art13.png', title:'Constellation Curl', teaser:'orbits of hair' }, // jpg example
   { src:'images/art14.png', title:'Equinox Horse', teaser:'prism mare' },
   { src:'images/art15.png', title:'Spiral Madonna', teaser:'eyes like spirals' },
   { src:'images/art16.png', title:'Sail at Dusk', teaser:'harbor gold' },
-  { src:'images/art17.jpg', title:'Island Light', teaser:'home by the water' },   // jpg example
-  { src:'images/art18.jpg', title:'Fury Mask', teaser:'geometry, loud' }          // jpg example
+  { src:'images/art17.png', title:'Island Light', teaser:'home by the water' },   // jpg example
+  { src:'images/art18.png', title:'Fury Mask', teaser:'geometry, loud' }          // jpg example
 ];
 
 /* Stories in a voice that’s part Tom Wolfe, part Natalie Goldberg, with a cosmic
