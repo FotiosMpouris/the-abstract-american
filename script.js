@@ -17,8 +17,8 @@ const FILES = [
   { src:'images/art02.png', title:'Queen of Stars', teaser:'angles in motion' },
   { src:'images/art03.png', title:'Street Fox', teaser:'urban trickster' },
   { src:'images/art04.png', title:'Constellation Curl', teaser:'orbits of hair' },
-  { src:'images/art05.png', title:'Radiant Muse', teaser:'galaxy curls' },
-  { src:'images/art06.png', title:'Beacon', teaser:'light through weather' },
+  { src:'images/art05.png', title:'Beacon', teaser:'light through weather' },
+  { src:'images/art06.png', title:'Radiant Muse', teaser:'galaxy curls' },
   { src:'images/art07.png', title:'Equinox Horse', teaser:'prism mare' },
   { src:'images/art08.png', title:'Fury Mask', teaser:'geometry, loud' },
   { src:'images/art09.png', title:'Trojan', teaser:'poise + cosmos' },  // jpg example
