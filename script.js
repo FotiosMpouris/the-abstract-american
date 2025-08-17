@@ -40,39 +40,39 @@ const STORIES = [
   // 1 Howl
   "Standing alone not knowing that there are billions.",
   // 2 Twin Suns
-  "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
+  "Crowns are for heads; she is the dream. She carries both. There is not a single day; we do not ever forget.",
   // 3 Sail of Fire
-  "Wind is the drummer, the boat is the bass line, and the sail—good Lord—the sail is a lighter flicked against the sky. Water copies everything like a devoted bootlegger and sells it back as gold.",
-  // 4 Iron Horse
-  "A horse built from rulers and fever dreams. Chrome bones, sunset mane, hooves that punch exclamation points into the dark. You can hear the snort: smoke, cinnamon, electricity.",
-  // 5 Radiant Muse
-  "She carries a galaxy in her hair like it’s a casual Tuesday. Her look says: I’ve read your aura and it checks out—now do something brave. The circles orbit because gravity is a fan.",
-  // 6 Beacon
-  "The lighthouse minds its own holiness while the weather auditions for disaster films. Paint, patience, gulls debating maritime policy—somehow the light keeps winning.",
-  // 7 Shark City
-  "Everything with a deadline grew teeth. Elevators, invoices, that guy from accounting. The shark grins like a billboard for capitalism and swims off with your to-do list between its molars.",
-  // 8 Barrel Run
-  "Momentum is a language and the rider speaks it fast. Dirt leaps up to applaud; the horse bows without slowing. Somewhere a stopwatch faints.",
-  // 9 Queen of Stars
-  "Crowns are for heads; constellations are for hair. She carries both. Flags in the back salute, not out of duty but because elegance just walked in.",
-  // 10 Circuit Gaze
-  "Her eyes are vinyl—warm, crackling—and all the geometry around her keeps trying to remix the track. Spoiler: the analog wins.",
-  // 11 Fox, Incorporated
-  "A CEO from the mythic forest. Tie knotted like a plot twist, ears tuned to quarterly whispers. He signs in pawprint cursive and the boardroom howls approval.",
-  // 12 Street Fox
   "Urban folklore in orange and cobalt. He smells like spray paint and good trouble, the kind of friend who returns your lighter with a better story attached.",
-  // 13 Constellation Curl
+  // 4 Iron Horse
   "Hair as a night map—each curl a galaxy kiosk saying You Are Here. She’s not posing; she’s orbiting slowly, taking attendance of the planets.",
-  // 14 Equinox Horse
+  // 5 Radiant Muse
+  "The lighthouse minds its own holiness while the weather auditions for disaster films. Paint, patience, gulls debating maritime policy—somehow the light keeps winning.",
+  // 6 Beacon
+  "She carries a galaxy in her hair like it’s a casual Tuesday. Her look says: I’ve read your aura and it checks out—now do something brave. The circles orbit because gravity is a fan.",
+  // 7 Shark City
   "Dawn on one flank, midnight on the other. The horse steps out of a star chart and onto asphalt, and the street has the good sense to hush.",
-  // 15 Spiral Madonna
+  // 8 Barrel Run
+  "A roar engineered from geometry and gossip. Fear shows up, laughs, and stays for the party. Even monsters deserve flattering lighting.",
+  // 9 Queen of Stars
+  "A horse built from rulers and fever dreams. Chrome bones, sunset mane, hooves that punch exclamation points into the dark. You can hear the snort: smoke, cinnamon, electricity.",
+  // 10 Circuit Gaze
+  "Everything with a deadline grew teeth. Elevators, invoices, that guy from accounting. The shark grins like a billboard for capitalism and swims off with your to-do list between its molars.",
+  // 11 Fox, Incorporated
+  "Momentum is a language and the rider speaks it fast. Dirt leaps up to applaud; the horse bows without slowing. Somewhere a stopwatch faints.",
+  // 12 Street Fox
   "A saint for artists and beautiful mistakes. Her halo is a traffic circle for ideas; they merge, they honk, they find their lane and fly.",
-  // 16 Sail at Dusk
+  // 13 Constellation Curl
+  "Wind is the drummer, the boat is the bass line, and the sail—good Lord—the sail is a lighter flicked against the sky. Water copies everything like a devoted bootlegger and sells it back as gold.",
+  // 14 Equinox Horse
+  "Her eyes are vinyl—warm, crackling—and all the geometry around her keeps trying to remix the track. Spoiler: the analog wins.",
+  // 15 Spiral Madonna
   "The harbor liquefies into stained glass. Boats hover like prayer beads pulled slow through the hour. The sun signs its autograph and leaves town.",
-  // 17 Island Light
+  // 16 Sail at Dusk
   "Stairs to the sea, lemons in the air, a boat napping in cobalt. The moon RSVP’d yes and brought dessert.",
+  // 17 Island Light
+  "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
   // 18 Fury Mask
-  "A roar engineered from geometry and gossip. Fear shows up, laughs, and stays for the party. Even monsters deserve flattering lighting."
+  "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder."
 ];
 
 /* ===== Build normalized image objects ===== */
