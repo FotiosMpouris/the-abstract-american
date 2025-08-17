@@ -38,7 +38,7 @@ const FILES = [
    wink from Jerry Garcia. Keep them punchy and alive. */
 const STORIES = [
   // 1 Howl
-  "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder.",
+  "Standing alone not knowing that there are billions.",
   // 2 Twin Suns
   "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
   // 3 Sail of Fire
