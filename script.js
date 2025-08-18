@@ -31,7 +31,9 @@ const FILES = [
   { src:'images/art16.png', title:'Island Light', teaser:'home by the water' },
   { src:'images/art17.png', title:'Maria Keeterna', teaser:'split-face harmony' },   // jpg example
   { src:'images/art18.png', title:'Howl', teaser:'fractured beast' },
-  { src:'images/art19.png', title:'Mycelias Network', teaser:'wisdom, discrepancy' }
+  { src:'images/art19.png', title:'Mycelias Network', teaser:'wisdom, discrepancy' },
+  { src:'images/art20.png', title:'What Is A Woman', teaser:'past, sacrifice' },
+  { src:'images/art21.png', title:'Headdress', teaser:'selective, memory' }
 ];
 
 /* Stories in a voice that’s part Tom Wolfe, part Natalie Goldberg, with a cosmic
@@ -73,8 +75,12 @@ const STORIES = [
   "Two hemispheres arguing politely over coffee. One eye maps the freeway; the other counts stars like rosary beads. The face doesn’t choose—she holds both suns in her jaw and walks out smiling.",
   // 18 Fury Mask
   "The canvas leans forward and bares its teeth. A junkyard radio tuned to moonlight, a carnival siren, a beast stitched from traffic cones and cathedral glass. You don’t tame it—you tip your hat and let it pass through you like thunder.",
-  // 18 Fury Mask
-  "The future is a technological breakthrough into the nature of the realistically possible."
+  // 19 Fury Mask
+  "The future is a technological breakthrough into the nature of the realistically possible.",
+  // 20 Fury Mask
+  "Searching for the truth will always end in a battle.",
+  // 21 Fury Mask
+  "College studies can have that affect on you."
 ];
 
 /* ===== Build normalized image objects ===== */
