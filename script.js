@@ -33,7 +33,11 @@ const FILES = [
   { src:'images/art18.png', title:'Howl', teaser:'fractured beast' },
   { src:'images/art19.png', title:'Mycelias Network', teaser:'wisdom, discrepancy' },
   { src:'images/art20.png', title:'What Is A Woman', teaser:'past, sacrifice' },
-  { src:'images/art21.png', title:'Headdress', teaser:'selective, memory' }
+  { src:'images/art21.png', title:'Headdress', teaser:'selective, memory' },
+  { src:'images/art22.png', title:'Fish 1', teaser:'abstract, fish' },
+  { src:'images/art23.png', title:'Fish 2', teaser:'abstract, fish' },
+  { src:'images/art24.png', title:'Meow 1', teaser:'cat, witch' },
+  { src:'images/art25.png', title:'Meow 2', teaser:'cat, sometimes' }
 ];
 
 /* Stories in a voice that’s part Tom Wolfe, part Natalie Goldberg, with a cosmic
@@ -80,7 +84,15 @@ const STORIES = [
   // 20 Fury Mask
   "Searching for the truth will always end in a battle.",
   // 21 Fury Mask
-  "College studies can have that affect on you."
+  "College studies can have that affect on you.",
+   // 22 Fury Mask
+  "A fish in the space of time heated by the sun",
+   // 23 Fury Mask
+  "A fish in the space of time heated by the sun",
+   // 24 Fury Mask
+  "A cat is about 32 years old in terms of personality",
+   // 25 Fury Mask
+  "A cat is about 32 years old in terms of personality"
 ];
 
 /* ===== Build normalized image objects ===== */
