@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Abstract American</title>
-  <meta name="description" content="A gallery from planet Earth: bold color, fractured shapes, a little sci-fi, a lot of human." />
+  <meta name="description" content="Bold color, fractured shapes, a little sci-fi, a lot of human. Original art by Fotios Mpouris." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -12,91 +12,50 @@
 </head>
 <body>
 
-  <!-- HERO -->
-  <header class="hero" id="home" aria-label="Site header with translucent background">
+  <!-- HERO (untouched) -->
+  <header class="hero" id="home" aria-label="Site header">
     <div class="hero__backdrop" aria-hidden="true"></div>
     <div class="hero__veil" aria-hidden="true"></div>
     <div class="hero__inner">
       <h1 class="logo" aria-label="The Abstract American">The Abstract American</h1>
-      <p class="tagline">Freedome To Create • United States of America • Live Free And Create</p>
-      <a class="cta" href="#gallery" aria-label="Jump to Gallery">Enter gallery</a>
+      <p class="tagline">Freedom To Create &bull; United States of America &bull; Live Free And Create</p>
+      <a class="cta" href="#gallery" aria-label="Enter the gallery">Enter Gallery</a>
     </div>
     <div class="scroll-indicator" aria-hidden="true"><span></span></div>
   </header>
 
-  <!-- GALLERY -->
+  <!-- GALLERY — masonry grid, natural proportions -->
   <main id="gallery" class="gallery-section" aria-label="Artwork gallery">
     <div class="section-title">
       <h2>Gallery</h2>
-      <p>Tap an image for full view, stories, and swipe/arrow navigation.</p>
+      <p>Click any piece for the full view and its story.</p>
     </div>
-
-    <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Artwork carousel">
-      <button class="nav prev" aria-label="Previous artworks" title="Previous">&#10094;</button>
-      <div class="track-viewport" aria-live="polite">
-        <ul class="track" id="carouselTrack"></ul>
-        <div class="holo-noise" aria-hidden="true"></div>
-      </div>
-      <button class="nav next" aria-label="Next artworks" title="Next">&#10095;</button>
-    </div>
-    <div class="dots" id="carouselDots" aria-label="Carousel pagination"></div>
+    <div class="masonry" id="galleryGrid"></div>
   </main>
 
-  <!-- ABOUT -->
-  <section id="about" class="about-section" aria-label="About The Abstract American">
+  <!-- ABOUT — tight artist statement -->
+  <section id="about" class="about-section" aria-label="About">
     <div class="section-title"><h2>About</h2></div>
-    <div class="about__content metal-card">
+    <div class="about__content">
       <p>
-An artist and dedicated builder driven by the absolute joy of creation, development, and animation; with countless hours spent crafting art and technology.
-My ultimate creative mission is to produce art and code. I have spent countless hours learning, creating and building digital art; diving pretty deep into the Adobe
-Creative Suite, Blender, 3dsMax and also utilizing Unity for simulated games and applications. I have also spent a lot of time learning to employ Python’s magic into 
-sophisticated Agentic Applications. Whether I am designing a captivating 3D experience or creating custom ai tools, my goal is always to craft solutions that solve real 
-problems; my mind attemting to find solutions and curate clarity from the throes of complexity. I find great joy in building and creating, whether art, custom tools, web design,
-automated workflows; my brain just feasts on all of it. My motivations lie in building projects where art, tech, and heart converge. If you are launching a bold idea, or crafting 
-something that challenges the ordinary—something entertaining, educational, or deeply meaningful—I am here to build it with you, step by inspired step.
-        
-        
+        Art, code, and everything in between. I build with color the way I build with technology —
+        looking for the moment something unexpected clicks. Most of these pieces are studies.
+        Experiments in shape, light, and whatever was playing on the stereo.
+        There will be more. This is only the beginning.
       </p>
       <p>
-        A lot of pieces in this collection are studies. There will be more. This is only the beginning.
-      </p>
-      <p>
-        More of my non-gallery projects live at
-        <a class="link" href="https://fotiosmpouris.com" target="_blank" rel="noopener">fotiosmpouris.com</a>.
+        More at <a class="link" href="https://fotiosmpouris.com" target="_blank" rel="noopener">fotiosmpouris.com</a>
+        &nbsp;&bull;&nbsp;
+        Coloring pages at <a class="link" href="https://colorfotifoti.com" target="_blank" rel="noopener">colorfotifoti.com</a>
       </p>
     </div>
   </section>
 
-  <!-- CONNECT (ColorFotiFoti + Contact) -->
-  <section id="contact" class="contact-section" aria-label="ColorFotiFoti promo and contact">
+  <!-- CONNECT -->
+  <section id="contact" class="contact-section" aria-label="Contact">
     <div class="section-title"><h2>Connect</h2></div>
-
-    <div class="contact__grid">
-      <!-- Promo -->
-      <div class="metal-card promo-card">
-        <div class="promo-header">
-          <img src="images/colorfoti.png" alt="ColorFotiFoti" class="promo-logo" />
-          <div>
-            <h3 class="promo-title">ColorFotiFoti.com</h3>
-            <p class="promo-sub">Download black &amp; white outlines to color yourself.</p>
-          </div>
-        </div>
-
-        <div class="mini-carousel" role="region" aria-roledescription="carousel" aria-label="ColorFotiFoti preview">
-          <button class="mini-nav mini-prev" aria-label="Previous preview">&#10094;</button>
-          <div class="mini-viewport">
-            <ul class="mini-track" id="miniTrack"></ul>
-          </div>
-          <button class="mini-nav mini-next" aria-label="Next preview">&#10095;</button>
-        </div>
-        <div class="mini-dots" id="miniDots" aria-label="Preview pagination"></div>
-
-        <a class="cta promo-link" href="https://colorfotifoti.com" target="_blank" rel="noopener">Visit ColorFotiFoti</a>
-      </div>
-
-      <!-- Contact form (keep your Formspree endpoint) -->
-      <form class="metal-card contact-form" action="https://formspree.io/f/xovlzvgd" method="POST">
-        <h3>Quick note</h3>
+    <div class="contact-card">
+      <form class="contact-form" action="https://formspree.io/f/xovlzvgd" method="POST">
         <label>
           Name
           <input type="text" name="name" required />
@@ -107,10 +66,9 @@ something that challenges the ordinary—something entertaining, educational, or
         </label>
         <label>
           Message
-          <textarea name="message" rows="5" required></textarea>
+          <textarea name="message" rows="4" required></textarea>
         </label>
         <button type="submit" class="cta small">Send</button>
-        <p class="form-hint">No spam. Just ideas.</p>
       </form>
     </div>
   </section>
@@ -125,10 +83,10 @@ something that challenges the ordinary—something entertaining, educational, or
     <p>&copy; <span id="year"></span> The Abstract American</p>
   </footer>
 
-  <!-- LIGHTBOX (Image Mode) -->
+  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lb-close" id="lbClose" aria-label="Close image mode">&times;</button>
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous image">&#10094;</button>
+    <button class="lb-close" id="lbClose" aria-label="Close">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">&#10094;</button>
     <figure class="lb-frame" id="lbFrame" role="group" aria-label="Expanded artwork">
       <img id="lbImage" alt="" />
       <figcaption class="lb-caption">
@@ -136,10 +94,8 @@ something that challenges the ordinary—something entertaining, educational, or
         <div class="lb-desc" id="lbDesc"></div>
         <div class="lb-count" id="lbCount"></div>
       </figcaption>
-      <div class="lb-flare" aria-hidden="true"></div>
     </figure>
-    <!-- Right arrow intentionally kept for desktop, hidden on mobile via CSS -->
-    <button class="lb-nav lb-next" id="lbNext" aria-label="Next image">&#10095;</button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">&#10095;</button>
   </div>
 
   <script src="script.js" defer></script>
